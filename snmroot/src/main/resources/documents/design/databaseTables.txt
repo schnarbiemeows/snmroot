@@ -1,0 +1,39 @@
+tables:
+
+# ingredients - list of ingredients, non-required FKs to ingredient_type, ingredient_subtype, brand_name
+# required FK to serving_type
+
+# ingredient_type - meats&dairy, fruits&vegetables, etc..
+create table ingredient_type(ingredient_type_id mediumint not null auto_increment primary key,
+	ingredient_type_desc varchar(50));
+# ingredient_subtype - some other future subcategory for more specific filtering
+create table ingredient_subtype(ingredient_subtype_id mediumint not null auto_increment primary key,
+	ingredient_subtype_desc varchar(50));
+# brand_name 
+create table brand_name(brand_name_id mediumint not null auto_increment primary key,
+	brand_name_desc varchar(50));
+# common_ingredients - extends ingredients, with fields for the person_id, ingredient_id
+# recipes - extends ingredients
+
+# serving_type
+create table serving_type(serving_type_id mediumint not null auto_increment primary key,
+	serving_type_desc varchar(50);
+# serving_type_conversion
+create table serving_type_conversion(serving_type_conversion_id mediumint not null auto_increment primary key,
+	from_type_id mediumint not null, foreign key serving_type_fk_1(from_type_id) references serving_type(serving_type_id) on update cascade on delete cascade,
+	to_type_id mediumint not null, foreign key serving_type_fk_2(to_type_id) references serving_type(serving_type_id) on update cascade on delete cascade,
+	ratio decimal(5,2) not null);
+	
+	
+# daily_totals - this will be a list of ingredients, account_id, ingredient_id, num_servings, date, saved_flag
+# when a user decides to submit their daily_list as a final count of their caloric intake for that day, all of these records
+# will have their saved_flag set to true, a record will be made in eating_history, and a batch job will later(say, a week later)
+# go back in this table and remove any records older than a week with saved_flag = true
+# eating_history - this will be a final totals of a user's calories for a given date(so compound primary key of account_id, date)
+# and the other fields here will be the same as an ingredients record
+
+# accounts - main table of accounts; would like to transition this to a dynamoDb table later
+create table accounts(account_id mediumint not null auto_increment primary key, username varchar(50) not null, 
+	password varchar(50) not null, email varchar(256) not null, admin varchar(1) not null, token varchar(500) ,
+	created_date DATETIME(2));
+alter table accounts add constraint unique_email_1 unique(email);

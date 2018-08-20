@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"> -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" language="javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="snmrootController.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div ng-app="myApp" ng-controller="myCtrl" ng-init="initialize()"
+		class="container">
+		<div class="row">
+			<div class="col-sm-1" id="btnDiv1" name="btnDiv1">
+				<button id="btn1" name="btn1" ng-click='showSection("1")'>Register</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv2" name="btnDiv2">
+				<button id="btn2" name="btn2" ng-click='showSection("2")'>Login</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv3" name="btnDiv3">
+				<button id="btn3" name="btn3" ng-click='showSection("3")'>Exercise</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv4" name="btnDiv4">
+				<button id="btn4" name="btn4" ng-click='showSection(4)'>?</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv5" name="btnDiv5">
+				<button id="btn5" name="btn5" ng-click='showSection(5)'>?</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv6" name="btnDiv6">
+				<button id="btn6" name="btn6" ng-click='showSection(6)'>?</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv7" name="btnDiv7">
+				<button id="btn7" name="btn7" ng-click='showSection(7)'>Serving
+					Types</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv8" name="btnDiv8">
+				<button id="btn8" name="btn8" ng-click='showSection(8)'>Ingredient
+					Types</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv9" name="btnDiv9">
+				<button id="btn9" name="btn9" ng-click='showSection(9)'>Ingredients</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv10" name="btnDiv10">
+				<button id="btn10" name="btn10" ng-click='showSection(10)'>Recipes</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv11" name="btnDiv11">
+				<button id="btn11" name="btn11" ng-click='showSection(11)'>Daily
+					Totals</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv12" name="btnDiv12">
+				<button id="btn12" name="btn12" ng-click='showSection(12)'>Eating
+					History</button>
+			</div>
+		</div>
+
+		<div id="section1" name="section1" ng-show="showRegisterSection"></div>
+		<div class="row" ng-show="showRegisterSection">
+			<div class="col-sm-4 double" id="registerSectionForm"
+				name="registerSectionForm" ng-show="showRegisterSection">
+				<br />
+				<p id="registerUsernameDiv" name="registerUsernameDiv"
+					ng-show="showRegisterSection">
+					Username: <input type="text" ng-model="registerUsername">
+				</p>
+				<p id="registerPasswordDiv" name="registerPasswordDiv"
+					ng-show="showRegisterSection">
+					Password: <input type="text" ng-model="registerPassword">
+				</p>
+				<p id="registerEmailDiv" name="registerEmailDiv"
+					ng-show="showRegisterSection">
+					Email: <input type="text" ng-model="registerEmail">
+				</p>
+				<p id="registrationButtonDiv" name="registrationButtonDiv"
+					ng-show="showRegisterSection">
+					<button id="registrationBtn" name="registrationBtn"
+						ng-click='register()'>Register!</button>
+				</p>
+			</div>
+			<div class="col-sm-8" ng-show="showRegisterSection"></div>
+		</div>
+		<div id="section2" name="section2" ng-show="showLoginSection"></div>
+		<div class="row" ng-show="showLoginSection">
+			<div class="col-sm-4 double" id="registerSectionForm"
+				name="registerSectionForm" ng-show="showLoginSection">
+				<br />
+				<p id="loginUsernameDiv" name="loginUsernameDiv"
+					ng-show="showLoginSection">
+					Username: <input type="text" ng-model="loginUsername">
+				</p>
+				<p id="loginPasswordDiv" name="loginPasswordDiv"
+					ng-show="showLoginSection">
+					Password: <input type="text" ng-model="loginPassword">
+				</p>
+				<p id="loginButtonDiv" name="loginButtonDiv"
+					ng-show="showLoginSection">
+					<button id="loginBtn" name="loginBtn" ng-click='login()'>Login!</button>
+				</p>
+			</div>
+			<div class="col-sm-8"></div>
+		</div>
+		<div id="section3" name="section3" ng-show="showExerciseSection">
+			<div class="row">
+				<div class="col-sm-12" id="section3Btn" name="section3Btn"
+					ng-show="showExerciseSectionbtn">
+					<button id="btn31" name="btn31" ng-click='findExercise()'>XXX</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="section4" name="section4" ng-show="showSection4"></div>
+		<div class="row">
+			<div class="col-sm-12" id="section4Btn" name="section4Btn"
+				ng-show="showSection4btn">
+				<button id="btn41" name="btn41" ng-click='addUser()'>add
+					User</button>
+			</div>
+		</div>
+		<div id="section5" name="section5" ng-show="showSection5"></div>
+
+		<div id="section6" name="section6" ng-show="showSection6"></div>
+
+		<div id="section7" name="section7" ng-show="showServingTypeSection"></div>
+
+		<div id="section8" name="section8" ng-show="showIngredientTypeSection">
+			<row>
+			<div class="col-sm-4" id="showITbtnDiv" name="showITbtnDiv"
+				ng-show="showIngredientTypeSection">
+				<button id="showITbtn" name="showITbtn" ng-click='showIT()'>types</button>
+			</div>
+			<div class="col-sm-4" id="showISTbtnDiv" name="showISTbtnDiv"
+				ng-show="showIngredientTypeSection">
+				<button id="showISTbtn" name="showISTbtn" ng-click='showIST()'>sub-types</button>
+			</div>
+			<div class="col-sm-4" id="showBrandsbtnDiv" name="showBrandsbtnDiv"
+				ng-show="showIngredientTypeSection">
+				<button id="showBrandsbtn" name="showBrandsbtn"
+					ng-click='showBrands()'>brands</button>
+			</div>
+			</row>
+			<row>
+			<div class="col-sm-12" ng-repeat="brand in brands"
+				ng-show="showITlistSection"></div>
+			</row>
+			<row>
+			<div class="col-sm-12" ng-repeat="brand in brands"
+				ng-show="showISTlistSection"></div>
+			</row>
+
+			<row>
+			<div class="col-sm-12" ng-repeat="brand in brandNamesList">
+				{{brand.brand_name_desc}}
+				<button ng-click='updateBrand(brand.id)'>update</button>
+			</div>
+			</row>
+
+			<div ng-show="showITForm"></div>
+			<div ng-show="showISTform"></div>
+			<div ng-show="showBrandNameForm"></div>
+		</div>
+
+		<div id="section9" name="section9" ng-show="showIngredientsSection"></div>
+
+		<div id="section10" name="section10" ng-show="showRecipeSection"></div>
+
+		<div id="section11" name="section11" ng-show="showDailyTotalsSection"></div>
+
+		<div id="section12" name="section12"
+			ng-show="showEatingHistorySection"></div>
+	</div>
+</body>
+</html>
