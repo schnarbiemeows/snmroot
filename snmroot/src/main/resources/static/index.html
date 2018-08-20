@@ -62,7 +62,8 @@
 					History</button>
 			</div>
 		</div>
-
+		<br/>
+		<br/>
 		<div id="section1" name="section1" ng-show="showRegisterSection"></div>
 		<div class="row" ng-show="showRegisterSection">
 			<div class="col-sm-4 double" id="registerSectionForm"
@@ -156,16 +157,43 @@
 				ng-show="showISTlistSection"></div>
 			</row>
 
-			<row>
-			<div class="col-sm-12" ng-repeat="brand in brandNamesList">
+			<!-- <row>
+			<div class="col-sm-12" ng-repeat="brand in brandNamesList" ng-show="showBrandNamelistSection">
 				{{brand.brand_name_desc}}
 				<button ng-click='updateBrand(brand.id)'>update</button>
 			</div>
-			</row>
+			</row> -->
+			<div ng-show="showBrandNamelistSection">
+				<table class="w3-table w3-bordered w3-striped">
+					<tr ng-show="showBrandNamelistSection">
+						<th>Actions</th>
+						<th></th>
+						<th>Brand Name</th>
+					</tr>
+					<tr ng-repeat="brand in brandNamesList"
+						ng-show="showBrandNamelistSection">
+						<td><button class="w3-btn w3-ripple"
+								ng-click='updateBrand(brand)'>&#9998; Edit</button></td>
+						<td><button class="w3-btn w3-ripple"
+								ng-click='deleteBrand(brand.id)'>&#9998; Delete</button></td>
+						<td>{{brand.brand_name_desc}}</td>
+					</tr>
+				</table>
+				<br>
+				<button class="w3-btn w3-green w3-ripple"
+					ng-click="updateBrand('new')">&#9998; Create New Brand</button>
 
+			</div>
 			<div ng-show="showITForm"></div>
 			<div ng-show="showISTform"></div>
-			<div ng-show="showBrandNameForm"></div>
+			<div ng-show="showBrandNameForm">
+				<h3 ng-hide="brandNameFormEdit">Create New Brand Name:</h3>
+				<h3 ng-show="brandNameFormEdit">Edit Brand Name:</h3>
+				<label>Brand Name:</label> <input class="w3-input w3-border"
+					type="text" ng-model="BrandNameFormDesc"> <br>
+				<button class="w3-btn w3-green w3-ripple" ng-click='saveBrandName()'>&#10004; Save
+					Changes</button>
+			</div>
 		</div>
 
 		<div id="section9" name="section9" ng-show="showIngredientsSection"></div>

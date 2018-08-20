@@ -17,7 +17,7 @@ create table brand_name(brand_name_id mediumint not null auto_increment primary 
 
 # serving_type
 create table serving_type(serving_type_id mediumint not null auto_increment primary key,
-	serving_type_desc varchar(50);
+	serving_type_desc varchar(50));
 # serving_type_conversion
 create table serving_type_conversion(serving_type_conversion_id mediumint not null auto_increment primary key,
 	from_type_id mediumint not null, foreign key serving_type_fk_1(from_type_id) references serving_type(serving_type_id) on update cascade on delete cascade,
