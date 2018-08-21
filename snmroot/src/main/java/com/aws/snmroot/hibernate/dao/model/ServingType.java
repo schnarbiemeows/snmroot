@@ -21,16 +21,17 @@ serving_type_desc varchar(50)
 	@Column(name = "serving_type_desc")
 	private String serving_type_desc;
 	
+	public String getServing_type_desc() {
+		return serving_type_desc;
+	}
+	public void setServing_type_desc(String serving_type_desc) {
+		this.serving_type_desc = serving_type_desc;
+	}
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getServingtype_desc() {
-		return serving_type_desc;
-	}
-	public void setServingtype_desc(String serving_type_desc) {
-		this.serving_type_desc = serving_type_desc;
-	}
+	
 }

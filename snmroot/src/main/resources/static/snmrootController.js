@@ -1,40 +1,70 @@
 var app = angular.module('myApp', []);
 	app.controller('myCtrl', function($scope, $http) {
+		// TODO - get rid of these 4 variables
 		$scope.simpleFormInput = "";
 		$scope.simpleFormOutput = "";
 		$scope.showInput = true;
 		$scope.showOutput = false;
+		// registration page
 		$scope.showRegisterSection = false;
 		$scope.registerUsername = "";
 		$scope.registerPassword = "";
 		$scope.registerEmail = "";
+		// login page
 		$scope.showLoginSection = false;
 		$scope.loginUsername = "";
 		$scope.loginPassword = "";
+		
+		// excercise page
 		$scope.showExerciseSection = false;
 		$scope.showExerciseSectionbtn = false;
 		$scope.showExerciseSectionresults = false;
+		
+		// blank sections for later
 		$scope.showSection4 = false;
 		$scope.showSection4btn = false;
 		$scope.showSection5 = false;
 		$scope.showSection6 = false;
+		// serving type page - 2 tables, serving_type, serving_type_conversion
 		$scope.showServingTypeSection = false;
+		$scope.ServingTypesList = [];
+		$scope.showSTlistSection = false;
+		$scope.showSTform = false;
+		$scope.STFormId = null;
+		$scope.STFormDesc = null;
+		$scope.STFormEdit = false;
+		// ingredient type page - 3 tables, ingredient_type, ingredient-subtype, brand_name
 		$scope.showIngredientTypeSection = false;
+		// ingredient type list variables
+		$scope.ingredientTypesList = [];
 		$scope.showITlistSection = false;
+		$scope.showITform = false;
+		$scope.ITFormId = null;
+		$scope.ITFormDesc = null;
+		$scope.ITFormEdit = false;
+		// ingredient subtype list variables
+		$scope.ingredientSubtypeList = [];
 		$scope.showISTlistSection = false;
+		$scope.showISTform = false;
+		$scope.ISTFormId = null;
+		$scope.ISTFormDesc = null;
+		$scope.ISTFormEdit = false;
+		// brand name list variables
+		$scope.brandNamesList = [];
 		$scope.showBrandNamelistSection = false;
+		$scope.showBrandNameForm = false;
 		$scope.BrandNameFormId = null;
 		$scope.BrandNameFormDesc = null;
-		$scope.showITForm = false;
-		$scope.showISTform = false;
-		$scope.showBrandNameForm = false;
 		$scope.brandNameFormEdit = false;
-		$scope.ingredientTypesList = [];
-		$scope.ingredientSubtypeList = [];
-		$scope.brandNamesList = [];
+		
+		
+		// ingredients page 
 		$scope.showIngredientsSection = false;
+		// recipes page
 		$scope.showRecipeSection = false;
+		// daily totals page
 		$scope.showDailyTotalsSection = false;
+		// eating history page
 		$scope.showEatingHistorySection = false;
 		$scope.initialize = function() {
 
@@ -77,25 +107,31 @@ var app = angular.module('myApp', []);
 			}
 			if (sectionNumber == 7) {
 				$scope.showServingTypeSection = true;
+				$scope.showSTlistSection = true;
+				$scope.showSTform = false;
+				$scope.getServingTypeList();
 			} else {
 				$scope.showServingTypeSection = false;
+				$scope.showSTlistSection = false;
+				$scope.showSTform = false;
 			}
 			if (sectionNumber == 8) {
 				$scope.showIngredientTypeSection = true;
-				$scope.get3ITlists();
+				// hide the 3 lists
 				$scope.showITlistSection = false;
 				$scope.showISTlistSection = false;
 				$scope.showBrandNamelistSection = false;
-				$scope.showITForm = false;
+				// hide the 3 forms
+				$scope.showITform = false;
 				$scope.showISTform = false;
 				$scope.showBrandNameForm = false;
-				
+				$scope.get3ITlists();
 			} else {
 				$scope.showIngredientTypeSection = false;
 				$scope.showITlistSection = false;
 				$scope.showISTlistSection = false;
 				$scope.showBrandNamelistSection = false;
-				$scope.showITForm = false;
+				$scope.showITform = false;
 				$scope.showISTform = false;
 				$scope.showBrandNameForm = false;
 			}
@@ -120,7 +156,7 @@ var app = angular.module('myApp', []);
 				$scope.showEatingHistorySection = false;
 			}
 		}
-		$scope.simplePost = function() {
+		/*$scope.simplePost = function() {
 			$scope.showInput = false;
 			item = {
 				"inputTextField" : $scope.simpleFormInput
@@ -141,7 +177,7 @@ var app = angular.module('myApp', []);
 				$scope.simpleFormOutput = results;
 				$scope.showOutput = true;
 			});
-		}
+		}*/
 		$scope.register = function() {
 			item = {
 				"username" : $scope.registerUsername,
@@ -214,6 +250,17 @@ var app = angular.module('myApp', []);
 				
 			});
 		}
+		$scope.getServingTypeList = function() {
+			var url = '/snmroot/servingtype/all';
+			$http.get(url).then(function(response) {
+				data = response.data;
+				if(typeof data!=="undefined") {
+					$scope.servingTypesList = data;
+					console.log('serving type length = ' , data.length);
+				}
+				console.log('Body:', data);
+			});
+		}
 		$scope.getIngredientTypeList = function() {
 			var url = '/snmroot/ingredienttype/maintype/all';
 			$http.get(url).then(function(response) {
@@ -251,7 +298,7 @@ var app = angular.module('myApp', []);
 			$scope.showITlistSection = true;
 			$scope.showISTlistSection = false;
 			$scope.showBrandNamelistSection = false;
-			$scope.showITForm = false;
+			$scope.showITform = false;
 			$scope.showISTform = false;
 			$scope.showBrandNameForm = false;
 		}
@@ -259,7 +306,7 @@ var app = angular.module('myApp', []);
 			$scope.showITlistSection = false;
 			$scope.showISTlistSection = true;
 			$scope.showBrandNamelistSection = false;
-			$scope.showITForm = false;
+			$scope.showITform = false;
 			$scope.showISTform = false;
 			$scope.showBrandNameForm = false;
 		}
@@ -267,9 +314,51 @@ var app = angular.module('myApp', []);
 			$scope.showITlistSection = false;
 			$scope.showISTlistSection = false;
 			$scope.showBrandNamelistSection = true;
-			$scope.showITForm = false;
+			$scope.showITform = false;
 			$scope.showISTform = false;
 			$scope.showBrandNameForm = false;
+		}
+		$scope.updateServingType = function(servingType) {
+			$scope.showSTform = true;
+			if (servingType == 'new') {
+				$scope.STFormId = null;
+				$scope.STFormDesc = null;
+				$scope.STFormEdit = false;
+			} else {
+				console.log('serving_type id # = ' + servingType.id);
+				$scope.STFormId = servingType.id;
+				$scope.STFormDesc = servingType.serving_type_desc;
+				$scope.STFormEdit = true;
+			}
+			
+		}
+		$scope.updateIngredientType = function(ingredientType) {
+			$scope.showITform = true;
+			if (ingredientType == 'new') {
+				$scope.ITFormId = null;
+				$scope.ITFormDesc = null;
+				$scope.ITFormEdit = false;
+			} else {
+				console.log('ingredient_type id # = ' + ingredientType.id);
+				$scope.ITFormId = ingredientType.id;
+				$scope.ITFormDesc = ingredientType.ingredient_type_desc;
+				$scope.ITFormEdit = true;
+			}
+			
+		}
+		$scope.updateIngredientSubtype = function(ingredientSubtype) {
+			$scope.showISTform = true;
+			if (ingredientSubtype == 'new') {
+				$scope.ISTFormId = null;
+				$scope.ISTFormDesc = null;
+				$scope.ISTFormEdit = false;
+			} else {
+				console.log('ingredient_subtype id # = ' + ingredientSubtype.id);
+				$scope.ISTFormId = ingredientSubtype.id;
+				$scope.ISTFormDesc = ingredientSubtype.ingredient_subtype_desc;
+				$scope.ISTFormEdit = true;
+			}
+			
 		}
 		$scope.updateBrand = function(brand) {
 			$scope.showBrandNameForm = true;
@@ -284,6 +373,15 @@ var app = angular.module('myApp', []);
 				$scope.brandNameFormEdit = true;
 			}
 			
+		}
+		$scope.deleteServingType = function(id) {
+			console.log('serving type id to be deleted = ' + id);
+			var url = '/snmroot/servingtype/delete/' + id;
+			$http.delete(url).then(function(response) {
+					status = response.status;
+					console.log('status = ', status);
+					$scope.getServingTypeList();
+				});
 		}
 		$scope.deleteIngredientType = function(id) {
 			console.log('ingredient type id to be deleted = ' + id);
@@ -312,12 +410,99 @@ var app = angular.module('myApp', []);
 					$scope.getBrandNameList();
 				});
 		}
+		$scope.saveServingType = function() {
+			if($scope.STFormId !== null) {
+				$scope.updateST();
+			} else {
+				$scope.insertST();
+			}
+		}
+		$scope.saveIngredientType = function() {
+			if($scope.ITFormId !== null) {
+				$scope.updateIT();
+			} else {
+				$scope.insertIT();
+			}
+		}
+		$scope.saveIngredientSubtype = function() {
+			if($scope.ISTFormId !== null) {
+				$scope.updateIST();
+			} else {
+				$scope.insertIST();
+			}
+		}
 		$scope.saveBrandName = function() {
 				if($scope.BrandNameFormId !== null) {
 					$scope.updateBrandName();
 				} else {
 					$scope.insertBrandName();
 				}
+		}
+		$scope.insertST = function() {
+			item = {
+					"serving_type_desc" : $scope.STFormDesc
+				};
+				var json = JSON.stringify(item);
+				var req = {
+					method : 'POST',
+					url : '/snmroot/servingtype/insert',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : json
+				};
+				$http(req).then(function(response) {
+					data = response.data;
+					$scope.showSTform = false;
+					$scope.STFormId = null;
+					$scope.STFormDesc = null;
+					$scope.STFormEdit = false;
+					$scope.getServingTypeList();
+				});		
+		}
+		$scope.insertIT = function() {
+			item = {
+					"ingredient_type_desc" : $scope.ITFormDesc
+				};
+				var json = JSON.stringify(item);
+				var req = {
+					method : 'POST',
+					url : '/snmroot/ingredienttype/maintype/insert',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : json
+				};
+				$http(req).then(function(response) {
+					data = response.data;
+					$scope.showITform = false;
+					$scope.ITFormId = null;
+					$scope.ITFormDesc = null;
+					$scope.ITFormEdit = false;
+					$scope.getIngredientTypeList();
+				});		
+		}
+		$scope.insertIST = function() {
+			item = {
+					"ingredient_subtype_desc" : $scope.ISTFormDesc
+				};
+				var json = JSON.stringify(item);
+				var req = {
+					method : 'POST',
+					url : '/snmroot/ingredienttype/subtype/insert',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : json
+				};
+				$http(req).then(function(response) {
+					data = response.data;
+					$scope.showISTform = false;
+					$scope.ISTFormId = null;
+					$scope.ISTFormDesc = null;
+					$scope.ISTFormEdit = false;
+					$scope.getIngredientSubtypeList();
+				});		
 		}
 		$scope.insertBrandName = function() {
 			item = {
@@ -340,6 +525,75 @@ var app = angular.module('myApp', []);
 					$scope.brandNameFormEdit = false;
 					$scope.getBrandNameList();
 				});		
+		}
+		$scope.updateST = function() {
+			item = {
+					"id" : $scope.STFormId,
+					"serving_type_desc" : $scope.STFormDesc
+				};
+				var json = JSON.stringify(item);
+				var req = {
+					method : 'POST',
+					url : '/snmroot/servingtype/update',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : json
+				};
+				$http(req).then(function(response) {
+					data = response.data;
+					$scope.showSTform = false;
+					$scope.STFormId = null;
+					$scope.STFormDesc = null;
+					$scope.STFormEdit = false;	
+					$scope.getServingTypeList();
+				});	
+		}
+		$scope.updateIT = function() {
+			item = {
+					"id" : $scope.ITFormId,
+					"ingredient_type_desc" : $scope.ITFormDesc
+				};
+				var json = JSON.stringify(item);
+				var req = {
+					method : 'POST',
+					url : '/snmroot/ingredienttype/maintype/update',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : json
+				};
+				$http(req).then(function(response) {
+					data = response.data;
+					$scope.showITform = false;
+					$scope.ITFormId = null;
+					$scope.ITFormDesc = null;
+					$scope.ITFormEdit = false;	
+					$scope.getIngredientTypeList();
+				});	
+		}
+		$scope.updateIST = function() {
+			item = {
+					"id" : $scope.ISTFormId,
+					"ingredient_subtype_desc" : $scope.ISTFormDesc
+				};
+				var json = JSON.stringify(item);
+				var req = {
+					method : 'POST',
+					url : '/snmroot/ingredienttype/subtype/update',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					data : json
+				};
+				$http(req).then(function(response) {
+					data = response.data;
+					$scope.showISTform = false;
+					$scope.ISTFormId = null;
+					$scope.ISTFormDesc = null;
+					$scope.ISTFormEdit = false;	
+					$scope.getIngredientSubtypeList();
+				});	
 		}
 		$scope.updateBrandName = function() {
 			item = {

@@ -131,7 +131,34 @@
 		<div id="section6" name="section6" ng-show="showSection6"></div>
 
 		<div id="section7" name="section7" ng-show="showServingTypeSection"></div>
-
+			<div ng-show="showSTlistSection">
+				<table class="w3-table w3-bordered w3-striped">
+					<tr ng-show="showSTlistSection">
+						<th>Actions</th>
+						<th></th>
+						<th>Serving Type</th>
+					</tr>
+					<tr ng-repeat="serving in servingTypesList"
+						ng-show="showSTlistSection">
+						<td><button class="w3-btn w3-ripple"
+								ng-click='updateServingType(serving)'>&#9998; Edit</button></td>
+						<td><button class="w3-btn w3-ripple"
+								ng-click='deleteServingType(serving.id)'>&#9998; Delete</button></td>
+						<td>{{serving.serving_type_desc}}</td>
+					</tr>
+				</table>
+				<br>
+				<button class="w3-btn w3-green w3-ripple"
+					ng-click="updateServingType('new')">&#9998; Create Serving Type</button>
+			</div>
+			<div ng-show="showSTform">
+				<h3 ng-hide="STFormEdit">Create Serving Type:</h3>
+				<h3 ng-show="STFormEdit">Edit Serving Type:</h3>
+				<label>Serving Type description:</label> <input class="w3-input w3-border"
+					type="text" ng-model="STFormDesc"> <br>
+				<button class="w3-btn w3-green w3-ripple" ng-click='saveServingType()'>&#10004; Save
+					Changes</button>
+			</div>
 		<div id="section8" name="section8" ng-show="showIngredientTypeSection">
 			<row>
 			<div class="col-sm-4" id="showITbtnDiv" name="showITbtnDiv"
@@ -148,14 +175,7 @@
 					ng-click='showBrands()'>brands</button>
 			</div>
 			</row>
-			<row>
-			<div class="col-sm-12" ng-repeat="brand in brands"
-				ng-show="showITlistSection"></div>
-			</row>
-			<row>
-			<div class="col-sm-12" ng-repeat="brand in brands"
-				ng-show="showISTlistSection"></div>
-			</row>
+			
 
 			<!-- <row>
 			<div class="col-sm-12" ng-repeat="brand in brandNamesList" ng-show="showBrandNamelistSection">
@@ -163,6 +183,62 @@
 				<button ng-click='updateBrand(brand.id)'>update</button>
 			</div>
 			</row> -->
+			<div ng-show="showITlistSection">
+				<table class="w3-table w3-bordered w3-striped">
+					<tr ng-show="showITlistSection">
+						<th>Actions</th>
+						<th></th>
+						<th>Ingredient Type</th>
+					</tr>
+					<tr ng-repeat="ingredient in ingredientTypesList"
+						ng-show="showITlistSection">
+						<td><button class="w3-btn w3-ripple"
+								ng-click='updateIngredientType(ingredient)'>&#9998; Edit</button></td>
+						<td><button class="w3-btn w3-ripple"
+								ng-click='deleteIngredientType(ingredient.id)'>&#9998; Delete</button></td>
+						<td>{{ingredient.ingredient_type_desc}}</td>
+					</tr>
+				</table>
+				<br>
+				<button class="w3-btn w3-green w3-ripple"
+					ng-click="updateIngredientType('new')">&#9998; Create Ingredient Type</button>
+			</div>
+			<div ng-show="showITform">
+				<h3 ng-hide="ITFormEdit">Create Ingredient Type:</h3>
+				<h3 ng-show="ITFormEdit">Edit Ingredient Type:</h3>
+				<label>Ingredient Type description:</label> <input class="w3-input w3-border"
+					type="text" ng-model="ITFormDesc"> <br>
+				<button class="w3-btn w3-green w3-ripple" ng-click='saveIngredientType()'>&#10004; Save
+					Changes</button>
+			</div>
+			<div ng-show="showISTlistSection">
+				<table class="w3-table w3-bordered w3-striped">
+					<tr ng-show="showISTlistSection">
+						<th>Actions</th>
+						<th></th>
+						<th>Ingredient Subtype</th>
+					</tr>
+					<tr ng-repeat="subtype in ingredientSubtypeList"
+						ng-show="showISTlistSection">
+						<td><button class="w3-btn w3-ripple"
+								ng-click='updateIngredientSubtype(subtype)'>&#9998; Edit</button></td>
+						<td><button class="w3-btn w3-ripple"
+								ng-click='deleteIngredientSubtype(subtype.id)'>&#9998; Delete</button></td>
+						<td>{{subtype.ingredient_subtype_desc}}</td>
+					</tr>
+				</table>
+				<br>
+				<button class="w3-btn w3-green w3-ripple"
+					ng-click="updateIngredientSubtype('new')">&#9998; Create Ingredient Subtype</button>
+			</div>
+			<div ng-show="showISTform">
+				<h3 ng-hide="ISTFormEdit">Create Ingredient Subtype:</h3>
+				<h3 ng-show="ISTFormEdit">Edit Ingredient Subtype:</h3>
+				<label>Subtype description:</label> <input class="w3-input w3-border"
+					type="text" ng-model="ISTFormDesc"> <br>
+				<button class="w3-btn w3-green w3-ripple" ng-click='saveIngredientSubtype()'>&#10004; Save
+					Changes</button>
+			</div>
 			<div ng-show="showBrandNamelistSection">
 				<table class="w3-table w3-bordered w3-striped">
 					<tr ng-show="showBrandNamelistSection">
@@ -182,10 +258,9 @@
 				<br>
 				<button class="w3-btn w3-green w3-ripple"
 					ng-click="updateBrand('new')">&#9998; Create New Brand</button>
-
 			</div>
-			<div ng-show="showITForm"></div>
-			<div ng-show="showISTform"></div>
+			
+			
 			<div ng-show="showBrandNameForm">
 				<h3 ng-hide="brandNameFormEdit">Create New Brand Name:</h3>
 				<h3 ng-show="brandNameFormEdit">Edit Brand Name:</h3>
