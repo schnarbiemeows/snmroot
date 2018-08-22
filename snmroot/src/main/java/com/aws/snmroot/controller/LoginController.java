@@ -14,6 +14,7 @@ import com.aws.snmroot.hibernate.dao.model.Registration;
 import com.aws.snmroot.hibernate.repository.RegistrationRepository;
 
 import utility.LogUtil;
+import utility.UtilityClass;
 
 @Controller
 @RequestMapping(path="/login")
@@ -34,7 +35,7 @@ public class LoginController {
 		try
 		{
 			formData.setCreated_date(new Date());
-			formData.setToken("token");
+			formData.setToken(UtilityClass.randomAlphaNumeric(20));
 			formData = registrationRepository.save(formData);
 			return formData;
 		} 
@@ -84,7 +85,10 @@ public class LoginController {
 		{
 			List<Registration> results = registrationRepository.findByUserName(formData.getUsername());
 			if(results!=null&&!results.isEmpty()) {
-				return results.get(0);
+				Registration  newUser = results.get(0);
+				newUser.setToken(UtilityClass.randomAlphaNumeric(20));
+				registrationRepository.save(newUser);
+				return newUser;
 			}
 			else {
 				throw new Exception("user not found");

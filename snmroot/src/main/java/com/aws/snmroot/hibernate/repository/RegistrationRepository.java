@@ -11,4 +11,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 
 	 @Query("select s from Registration s where s.username = ?1")
 	 List<Registration> findByUserName(String username);
+	 
+	 @Query("select s from Registration s where s.token = ?1")
+	 List<Registration> findByLoginToken(String username);
 }
