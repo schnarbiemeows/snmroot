@@ -1,7 +1,7 @@
 /**
  * this will have controllers for the registration and login pages
  */
-app.controller('loginCtrl', function($scope, $http, $location, loginProperties) {
+app.controller('loginCtrl', function($scope, $http, $location, $timeout, loginProperties) {
 	// error messaging
 	$scope.errors = [];
 	$scope.hasError = false;
@@ -64,7 +64,10 @@ app.controller('loginCtrl', function($scope, $http, $location, loginProperties) 
 			$location.path("/main");
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.statusText);
+			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 	$scope.testLogin = function() {
@@ -101,6 +104,9 @@ app.controller('loginCtrl', function($scope, $http, $location, loginProperties) 
 		}, function myError(response) {
 	        $scope.hasError = true;
 			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 });

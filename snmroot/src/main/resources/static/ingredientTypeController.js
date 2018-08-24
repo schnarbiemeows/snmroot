@@ -1,7 +1,7 @@
 /**
  * this will have controllers for the ingredient type, ingredient subtype, and brand name pages
  */
-app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginProperties) {
+app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout, loginProperties) {
 	// error messaging
 	$scope.errors = [];
 	$scope.hasError = false;
@@ -83,7 +83,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 			
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.statusText);
+			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 	$scope.getIngredientTypeList = function() {
@@ -97,7 +100,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.statusText);
+			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 	$scope.getIngredientSubtypeList = function() {
@@ -111,7 +117,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.statusText);
+			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 	$scope.getBrandNameList = function() {
@@ -125,7 +134,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.statusText);
+			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 	$scope.showIT = function() {
@@ -203,7 +215,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });
 	}
 	$scope.deleteIngredientSubtype = function(id) {
@@ -215,7 +230,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });
 	}
 	$scope.deleteBrand = function(id) {
@@ -227,7 +245,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });
 	}
 	$scope.saveIngredientType = function() {
@@ -273,7 +294,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });		
 	}
 	$scope.insertIST = function() {
@@ -298,7 +322,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });		
 	}
 	$scope.insertBrandName = function() {
@@ -323,7 +350,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });		
 	}
 	$scope.updateIT = function() {
@@ -349,7 +379,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });	
 	}
 	$scope.updateIST = function() {
@@ -375,7 +408,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });	
 	}
 	$scope.updateBrandName = function() {
@@ -401,7 +437,10 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, loginPro
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });	
 	}
 });

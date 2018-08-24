@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "items")
 public class Item {
-
+// no longer used
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;

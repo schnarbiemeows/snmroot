@@ -1,7 +1,7 @@
 /**
  * this will have the controller for the serving type page
  */
-app.controller('servingTypeCtrl', function($scope, $http, $location, loginProperties) {
+app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, loginProperties) {
 	// serving type page - 2 tables, serving_type, serving_type_conversion
 	$scope.username = loginProperties.getusername();
 	$scope.logintoken = loginProperties.getLogintoken();
@@ -56,7 +56,10 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, loginProper
 				$location.path("/main");
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });
 		}
 	$scope.getServingTypeList = function() {
@@ -70,7 +73,10 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, loginProper
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.statusText);
+			$scope.errors.push(response.data.message);
+			$timeout(function () {
+			      $scope.clearErrors();
+			  }, 3000);
 	    });
 	}
 	$scope.updateServingType = function(servingType) {
@@ -95,7 +101,10 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, loginProper
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });
 	}
 	$scope.saveServingType = function() {
@@ -127,7 +136,10 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, loginProper
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });		
 	}
 	$scope.updateST = function() {
@@ -153,7 +165,10 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, loginProper
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.statusText);
+				$scope.errors.push(response.data.message);
+				$timeout(function () {
+				      $scope.clearErrors();
+				  }, 3000);
 		    });	
 	}
 });

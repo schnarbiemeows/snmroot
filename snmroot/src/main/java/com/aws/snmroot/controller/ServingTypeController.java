@@ -1,9 +1,11 @@
 package com.aws.snmroot.controller;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.aws.snmroot.exception.NotFoundException;
 import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.repository.ServingTypeRepository;
@@ -35,39 +38,76 @@ public class ServingTypeController {
 	private LogUtil log = LogUtil.getMasterLogger();
 	
 	@GetMapping(path="/all")
-	public @ResponseBody Iterable<ServingType> getAllServingTypes() {
+	public ResponseEntity<Object> getAllServingTypes() {
 		log.snmrootLoggerDEBUG("inside servingTypeRepository");
-		return servingTypeRepository.findAll();
+		try {
+			Iterable<ServingType> results = servingTypeRepository.findAll();
+			log.snmrootLoggerDEBUG("returning list of serving types");
+			return ResponseEntity.status(HttpStatus.OK).body(results);
+		} catch (Exception e) {
+			log.snmrootLoggerWARN(e.toString());
+			throw e;
+		}
 	}
 	
 	@GetMapping(path="/findById/{id}")
-	public @ResponseBody ServingType findServingTypeById(@PathVariable int id) {
+	public ResponseEntity<Object> findServingTypeById(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside findServingTypeById");
-		Integer primaryKey = new Integer(id);
-		Optional<ServingType> servingTypeOptional = servingTypeRepository.findById(primaryKey);
-		ServingType results = servingTypeOptional.get();
-		return results;
+		try {
+			Integer primaryKey = new Integer(id);
+			Optional<ServingType> servingTypeOptional = servingTypeRepository.findById(primaryKey);
+			ServingType results = servingTypeOptional.get();
+			log.snmrootLoggerDEBUG("found serving type with id = " + id);
+			return ResponseEntity.status(HttpStatus.OK).body(results);
+		} catch (NoSuchElementException e1) {
+			log.snmrootLoggerWARN(e1.toString());
+			throw new NotFoundException("item not found");
+		} catch (Exception e) {
+			log.snmrootLoggerWARN(e.toString());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.toString());
+		}
 	}
 	
 	@PostMapping(path="/insert")
-	public @ResponseBody ServingType insertServingType(@RequestBody ServingType formData) {
+	public ResponseEntity<Object> insertServingType(@RequestBody ServingType formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertServingType");
-		servingTypeRepository.save(formData);
-		return formData;
+		try {
+			if(null==formData.getServing_type_desc()||formData.getServing_type_desc().length()<1) {
+				throw new Exception("no item description given");
+			}
+			servingTypeRepository.save(formData);
+			log.snmrootLoggerDEBUG("inserted serving type");
+			return ResponseEntity.status(HttpStatus.OK).body(formData);
+		} catch (Exception e) {
+			log.snmrootLoggerWARN(e.toString());
+			throw e;
+		}
 	}
 	
 	@PostMapping(path="/update")
-	public @ResponseBody ServingType updateServingType(@RequestBody ServingType formData) {
+	public ResponseEntity<Object> updateServingType(@RequestBody ServingType formData) {
 		log.snmrootLoggerDEBUG("inside updateServingType");
-		servingTypeRepository.save(formData);
-		return formData;
+		try {
+			servingTypeRepository.save(formData);
+			log.snmrootLoggerDEBUG("updated serving type");
+			return ResponseEntity.status(HttpStatus.OK).body(formData);
+		} catch (Exception e) {
+			log.snmrootLoggerWARN(e.toString());
+			throw e;
+		}
 	}
 	@DeleteMapping(path="/delete/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void deleteServingType(@PathVariable int id) {
+	public ResponseEntity<Object> deleteServingType(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside deleteServingType");
-		Integer primaryKey = new Integer(id);
-		servingTypeRepository.deleteById(primaryKey);
+		try {
+			Integer primaryKey = new Integer(id);
+			servingTypeRepository.deleteById(primaryKey);
+			return ResponseEntity.status(HttpStatus.OK).body("serving typewith key = " + id + "  deleted");
+		} catch (Exception e) {
+			log.snmrootLoggerWARN(e.toString());
+			throw e;
+		}
 	}
 	
 }

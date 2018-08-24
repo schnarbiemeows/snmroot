@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "accounts")
 public class Registration {
-
+// TODO - rename object to Account
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "account_id")
