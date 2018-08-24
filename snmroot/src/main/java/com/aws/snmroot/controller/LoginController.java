@@ -2,6 +2,7 @@ package com.aws.snmroot.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.aws.snmroot.exception.NotFoundException;
-import com.aws.snmroot.hibernate.dao.model.Registration;
-import com.aws.snmroot.hibernate.repository.RegistrationRepository;
-
-import utility.LogUtil;
-import utility.UtilityClass;
+import com.aws.snmroot.hibernate.dao.model.Account;
+import com.aws.snmroot.hibernate.repository.AccountRepository;
+import com.aws.snmroot.utility.LogUtil;
+import com.aws.snmroot.utility.UtilityClass;
 
 @Controller
 @RequestMapping(path="/login")
@@ -29,18 +29,18 @@ public class LoginController {
 	 */
 	
 	@Autowired
-	RegistrationRepository registrationRepository;
+	AccountRepository accountRepository;
 	
 	private LogUtil log = LogUtil.getMasterLogger();
 	
 	@PostMapping(path="/register")
-	public ResponseEntity<Object> registerAccount(@RequestBody Registration formData) {
+	public ResponseEntity<Object> registerAccount(@RequestBody Account formData) {
 		log.snmrootLoggerDEBUG("inside registerAccount");
 		try
 		{
 			formData.setCreated_date(new Date());
 			formData.setToken(UtilityClass.randomAlphaNumeric(20));
-			formData = registrationRepository.save(formData);
+			formData = accountRepository.save(formData);
 			return ResponseEntity.status(HttpStatus.CREATED).body(formData);
 		} catch(DataIntegrityViolationException ev) {
 			throw new DataIntegrityViolationException("email already in use");
@@ -54,9 +54,9 @@ public class LoginController {
 	
 	@PostMapping(path="/login")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<Object> login(@RequestBody Registration formData) {
+	public ResponseEntity<Object> login(@RequestBody Account formData) {
 		log.snmrootLoggerDEBUG("inside login");
-		Registration databaseRecord = null;
+		Account databaseRecord = null;
 		try
 		{
 			if((null==formData.getUsername())||("".equals(formData.getUsername().trim())||
@@ -64,7 +64,7 @@ public class LoginController {
 				log.snmrootLoggerWARN("username and/or password is missing");
 				ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("username and/or password is missing");
 			}
-			List<Registration> results = registrationRepository.findByUserName(formData.getUsername());
+			List<Account> results = accountRepository.findByUserName(formData.getUsername());
 			if(results!=null&&!results.isEmpty()) {
 				databaseRecord =  results.get(0);
 				String tempPassword = databaseRecord.getPassword();
@@ -92,17 +92,82 @@ public class LoginController {
 	}
 	
 	@PostMapping(path="/checkUser")
-	public ResponseEntity<Object> checkUser(@RequestBody Registration formData) throws Exception {
+	public ResponseEntity<Object> checkUser(@RequestBody Account formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside checkUser");
 		try
 		{
-			List<Registration> results = registrationRepository.findByUserName(formData.getUsername());
+			List<Account> results = accountRepository.findByUserName(formData.getUsername());
 			if(results!=null&&!results.isEmpty()) {
-				Registration  newUser = results.get(0);
+				Account  newUser = results.get(0);
 				newUser.setToken(UtilityClass.randomAlphaNumeric(20));
-				registrationRepository.save(newUser);
+				accountRepository.save(newUser);
 				log.snmrootLoggerDEBUG("user verified, setting a new token");
 				return ResponseEntity.status(HttpStatus.OK).body(newUser);
+			}
+			else {
+				log.snmrootLoggerWARN("user not found");
+				throw new NotFoundException("user not found");
+			}
+		} 
+		catch(Exception e)
+		{
+			log.snmrootLoggerERROR(e.toString());
+			throw e;
+		}
+	}
+	
+	/* 
+	 * this method is for the init() method on the table pages, we need to validate their account
+	 */
+	@PostMapping(path="/validate")
+	public ResponseEntity<Object> validateUser(@RequestBody Account formData) throws Exception {
+		log.snmrootLoggerDEBUG("inside checkUser");
+		try
+		{
+			/*
+			 * if the user has not yet validated their account via clicking the email 
+			 * link(put in later)
+			 * */
+			if(null==formData.getValidated()||!"Y".equals(formData.getValidated()))
+			{
+				log.snmrootLoggerWARN("user not validated yet");
+				throw new NotFoundException("user not validated yet");
+			}
+			/* else
+			 * lookup the account by ID #
+			 */
+			Optional<Account> results = accountRepository.findById(formData.getId());
+			/* 
+			 * if we find an account record
+			 */
+			if(results.isPresent()) { 
+				Account  user = results.get();
+				/* 
+				 * if the login token is the same as the token passed in
+				 */
+				if(null!=user.getToken()&&user.getToken().equals(formData.getToken())) {
+					// regenerate the token
+					user.setToken(UtilityClass.randomAlphaNumeric(20));
+					/*
+					 * check to see if the user is admin, and set the admin flag to true if 
+					 * this is so, and generate a new token
+					 */
+					if(null!=user.getAdmintoken()&&user.getAdmintoken().equals(formData.getAdmintoken())) {
+						user.setAdmintoken(UtilityClass.randomAlphaNumeric(20));
+					}
+					/*
+					 * persist the updated tokens to the record
+					 * 
+					 * TODO later - noting yet for the subscriber token
+					 */
+					accountRepository.save(user);
+					log.snmrootLoggerDEBUG("user verified, setting a new token(s)");
+					return ResponseEntity.status(HttpStatus.OK).body(user);
+				} // otherwise, the user is invalid
+				else {
+					log.snmrootLoggerWARN("user token not valid");
+					throw new NotFoundException("user token not valid");
+				}
 			}
 			else {
 				log.snmrootLoggerWARN("user not found");

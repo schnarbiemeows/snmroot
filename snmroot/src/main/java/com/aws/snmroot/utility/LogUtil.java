@@ -1,4 +1,4 @@
-package utility;
+package com.aws.snmroot.utility;
 
 import org.apache.log4j.Logger;
 

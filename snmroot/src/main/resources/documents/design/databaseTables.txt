@@ -34,6 +34,6 @@ create table serving_type_conversion(serving_type_conversion_id mediumint not nu
 
 # accounts - main table of accounts; would like to transition this to a dynamoDb table later
 create table accounts(account_id mediumint not null auto_increment primary key, username varchar(50) not null, 
-	password varchar(50) not null, email varchar(256) not null, admin varchar(1) not null, token varchar(500) ,
-	created_date DATETIME(2));
+	password varchar(50) not null, email varchar(256) not null, validated varchar(1) not null, admin varchar(1) not null, token varchar(500),
+	admintoken varchar(500), subscribertoken varchar(500),created_date DATETIME(2));
 alter table accounts add constraint unique_email_1 unique(email);

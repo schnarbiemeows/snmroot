@@ -1,4 +1,4 @@
-package utility;
+package com.aws.snmroot.utility;
 
 import java.util.Random;
 

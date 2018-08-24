@@ -6,10 +6,12 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	$scope.static = "x";
 	$scope.errors = [];
 	$scope.hasError = false;
+	$scope.accountid = loginProperties.getAccountId();
 	$scope.username = loginProperties.getusername();
 	$scope.logintoken = loginProperties.getLogintoken();
 	$scope.admintoken = loginProperties.getAdmintoken();
 	$scope.subscribertoken = loginProperties.getSubscribertoken();
+	$scope.viewOnly = true;
 	// ingredient type page - 3 tables, ingredient_type, ingredient-subtype, brand_name
 	// ingredient type list variables
 	$scope.ingredientTypesList = [];
@@ -41,6 +43,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.initialize = function() {
 		$scope.clearErrors();
+		$scope.validateUser();
 		$scope.get3ITlists();
 	}
 	$scope.testIngredientTypeForm = function() {
@@ -63,6 +66,9 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 		} else {
 			$scope.brandNameFormError = false;
 		}
+	}
+	$scope.validateUser = function() {
+		
 	}
 	$scope.get3ITlists = function() {
 		var url = '/snmroot/ingredienttype/all3lists';

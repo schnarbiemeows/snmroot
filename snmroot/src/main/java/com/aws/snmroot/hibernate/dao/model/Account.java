@@ -8,10 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "accounts")
-public class Registration {
+public class Account {
 // TODO - rename object to Account
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -30,9 +31,36 @@ public class Registration {
 	@Column(name = "admin")
 	private String admin = "N";
 	
+	@Column(name = "validated")
+	private String validated = "N";
+	
 	@Column(name = "token")
 	private String token;
 	
+	@Column(name = "admintoken")
+	private String admintoken;
+	
+	@Column(name = "subscribertoken")
+	private String subscribertoken;
+	
+	public String getValidated() {
+		return validated;
+	}
+	public void setValidated(String validated) {
+		this.validated = validated;
+	}
+	public String getAdmintoken() {
+		return admintoken;
+	}
+	public void setAdmintoken(String admintoken) {
+		this.admintoken = admintoken;
+	}
+	public String getSubscribertoken() {
+		return subscribertoken;
+	}
+	public void setSubscribertoken(String subscribertoken) {
+		this.subscribertoken = subscribertoken;
+	}
 	@Column(name = "created_date")
 	private Date created_date;
 	public Integer getId() {

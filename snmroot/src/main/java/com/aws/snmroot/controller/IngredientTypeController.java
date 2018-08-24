@@ -25,8 +25,7 @@ import com.aws.snmroot.hibernate.dao.model.IngredientType;
 import com.aws.snmroot.hibernate.repository.BrandNameRepository;
 import com.aws.snmroot.hibernate.repository.IngredientSubtypeRepository;
 import com.aws.snmroot.hibernate.repository.IngredientTypeRepository;
-
-import utility.LogUtil;
+import com.aws.snmroot.utility.LogUtil;
 
 @Controller
 @RequestMapping(path="/ingredienttype")

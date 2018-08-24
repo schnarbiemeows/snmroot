@@ -44,4 +44,11 @@ public class SnMResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 		new SnmExceptionResponse(new Date(),ex.getMessage(),request.getDescription(false));
 		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(UnauthorizedException.class)
+	public final ResponseEntity<Object> handleUnauthorizedException(Exception ex, WebRequest request) {
+		SnmExceptionResponse exceptionResponse = 
+		new SnmExceptionResponse(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN);
+	}
 }

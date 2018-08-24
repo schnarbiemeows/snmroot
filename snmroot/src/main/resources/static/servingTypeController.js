@@ -3,6 +3,7 @@
  */
 app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, loginProperties) {
 	// serving type page - 2 tables, serving_type, serving_type_conversion
+	$scope.accountid = loginProperties.getAccountId();
 	$scope.username = loginProperties.getusername();
 	$scope.logintoken = loginProperties.getLogintoken();
 	$scope.admintoken = loginProperties.getAdmintoken();

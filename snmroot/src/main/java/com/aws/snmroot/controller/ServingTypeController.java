@@ -8,23 +8,21 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.aws.snmroot.controller.forms.DeleteMessage;
+import com.aws.snmroot.controller.forms.ServingTypeInputWrapper;
 import com.aws.snmroot.exception.DeletedNotFoundException;
 import com.aws.snmroot.exception.NotFoundException;
-import com.aws.snmroot.hibernate.dao.model.ServingType;
+import com.aws.snmroot.hibernate.dao.model.Account;
 import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.repository.ServingTypeRepository;
-
-import utility.LogUtil;
+import com.aws.snmroot.utility.LogUtil;
+import com.aws.snmroot.utility.UserValidator;
 
 @Controller
 @RequestMapping(path="/servingtype")
@@ -72,13 +70,17 @@ public class ServingTypeController {
 	}
 	
 	@PostMapping(path="/insert")
-	public ResponseEntity<Object> insertServingType(@RequestBody ServingType formData) throws Exception {
+	public ResponseEntity<Object> insertServingType(@RequestBody ServingTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertServingType");
 		try {
-			if(null==formData.getServing_type_desc()||formData.getServing_type_desc().length()<1) {
+			Account account = formData.getAccount();
+			UserValidator validator = new UserValidator(account);
+			account = validator.validateAdminRights(log);
+			ServingType inputRecord = formData.getServingType();
+			if(null==inputRecord.getServing_type_desc()||inputRecord.getServing_type_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			servingTypeRepository.save(formData);
+			servingTypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("inserted serving type");
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
@@ -88,10 +90,17 @@ public class ServingTypeController {
 	}
 	
 	@PostMapping(path="/update")
-	public ResponseEntity<Object> updateServingType(@RequestBody ServingType formData) {
+	public ResponseEntity<Object> updateServingType(@RequestBody ServingTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateServingType");
 		try {
-			servingTypeRepository.save(formData);
+			Account account = formData.getAccount();
+			UserValidator validator = new UserValidator(account);
+			account = validator.validateAdminRights(log);
+			ServingType inputRecord = formData.getServingType();
+			if(null==inputRecord.getServing_type_desc()||inputRecord.getServing_type_desc().length()<1) {
+				throw new Exception("no item description given");
+			}
+			servingTypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("updated serving type");
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
@@ -99,12 +108,16 @@ public class ServingTypeController {
 			throw e;
 		}
 	}
-	@DeleteMapping(path="/delete/{id}")
-	public ResponseEntity<Object> deleteServingType(@PathVariable int id) {
+	@PostMapping(path="/delete")
+	public ResponseEntity<Object> deleteServingType(@RequestBody ServingTypeInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteServingType");
 		try {
-			Integer primaryKey = new Integer(id);
-			servingTypeRepository.deleteById(primaryKey);
+			Account account = formData.getAccount();
+			UserValidator validator = new UserValidator(account);
+			account = validator.validateAdminRights(log);
+			ServingType inputRecord = formData.getServingType();
+			Integer id = inputRecord.getId();
+			servingTypeRepository.deleteById(id);
 			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("serving type with key = " + id + "  deleted"));
 		} catch (EmptyResultDataAccessException emp) {
 			log.snmrootLoggerWARN("ingredient type not found!");
@@ -113,6 +126,5 @@ public class ServingTypeController {
 			log.snmrootLoggerWARN(e.toString());
 			throw e;
 		}
-	}
-	
+	}	
 }

@@ -33,12 +33,19 @@ var app = angular.module('myApp', ["ngRoute"]);
 		  });
 		});
 	app.service('loginProperties', function () {
+		var accountid = { accountid : null };
         var username = { username : null };
         var logintoken = { logintoken : null };
         var admintoken = { admintoken : null };
         var subscribertoken = { subscribertoken : null };
 
         return {
+        	getAccountId: function() {
+        		return accountid.accountid;
+        	}
+	        setAccountId: function(value) {
+	        	accountid.accountid = value;
+	        }
             getusername: function () {
                 return username.username;
             },
