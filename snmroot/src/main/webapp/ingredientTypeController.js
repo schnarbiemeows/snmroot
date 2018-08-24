@@ -3,7 +3,7 @@
  */
 app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout, loginProperties) {
 	// error messaging
-	$scope.static = "x";
+	$scope.webapp = "x";
 	$scope.errors = [];
 	$scope.hasError = false;
 	$scope.username = loginProperties.getusername();

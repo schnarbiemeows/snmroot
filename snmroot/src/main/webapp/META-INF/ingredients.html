@@ -1,0 +1,22 @@
+<div ng-controller="ingredientCtrl" ng-init="initialize()" class="container">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Schnarbies and Meowers!</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#!logout">Logout</a></li>
+				<li><a href="#!servingtypes">Servings</a></li>
+				<li><a href="#!ingredienttypes">Types</a></li>
+				<li><a href="#!ingredientsubtypes">Subtypes</a></li>
+				<li><a href="#!brandnames">Brands</a></li>
+			</ul>
+		</div>
+	</nav>
+	<br>
+	<div ng-show="hasError">
+		<alert ng-repeat="error in errors track by $index" type="danger"
+			close="closeAlert($index)">{{error}}</alert>
+	</div>
+	<br>
+</div>

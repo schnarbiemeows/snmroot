@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.aws.snmroot.controller.forms.DeleteMessage;
+import com.aws.snmroot.exception.DeletedNotFoundException;
 import com.aws.snmroot.exception.NotFoundException;
 import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.dao.model.ServingType;
@@ -64,7 +67,7 @@ public class ServingTypeController {
 			throw new NotFoundException("item not found");
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.toString());
+			throw e;
 		}
 	}
 	
@@ -97,13 +100,15 @@ public class ServingTypeController {
 		}
 	}
 	@DeleteMapping(path="/delete/{id}")
-	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Object> deleteServingType(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside deleteServingType");
 		try {
 			Integer primaryKey = new Integer(id);
 			servingTypeRepository.deleteById(primaryKey);
-			return ResponseEntity.status(HttpStatus.OK).body("serving typewith key = " + id + "  deleted");
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("serving type with key = " + id + "  deleted"));
+		} catch (EmptyResultDataAccessException emp) {
+			log.snmrootLoggerWARN("ingredient type not found!");
+			throw new DeletedNotFoundException("serving type not found! could not find the item to be deleted");
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
 			throw e;

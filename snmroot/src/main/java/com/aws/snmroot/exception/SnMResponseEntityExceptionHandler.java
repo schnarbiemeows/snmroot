@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,5 +36,12 @@ public class SnMResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 		SnmExceptionResponse exceptionResponse = 
 		new SnmExceptionResponse(new Date(),ex.getMessage(),request.getDescription(false));
 		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(EmptyResultDataAccessException.class)
+	public final ResponseEntity<Object> handleDeletedNotFoundException(Exception ex, WebRequest request) {
+		SnmExceptionResponse exceptionResponse = 
+		new SnmExceptionResponse(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
 }

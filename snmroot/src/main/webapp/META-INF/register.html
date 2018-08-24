@@ -1,0 +1,39 @@
+<div ng-controller="loginCtrl" ng-init="initialize()" class="container">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Schnarbies and Meowers!</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#!">Home</a></li>
+				<li><a href="#!login">Login</a></li>
+			</ul>
+		</div>
+	</nav>
+	<br>
+	<div ng-show="hasError">
+		<alert ng-repeat="error in errors track by $index" type="danger"
+			close="closeAlert($index)">{{error}}</alert>
+	</div>
+	<div class="row">
+		<div class="col-sm-4 double" id="registerSectionForm"
+			name="registerSectionForm">
+			<br>
+			<p id="registerUsernameDiv" name="registerUsernameDiv">
+				Username: <input type="text" ng-model="registerUsername" required>
+			</p>
+			<p id="registerPasswordDiv" name="registerPasswordDiv">
+				Password: <input type="password" ng-model="registerPassword"
+					required>
+			</p>
+			<p id="registerEmailDiv" name="registerEmailDiv">
+				Email: <input type="text" ng-model="registerEmail" required email>
+			</p>
+			<p id="registrationButtonDiv" name="registrationButtonDiv">
+				<button id="registrationBtn" name="registrationBtn"
+					ng-disabled="registrationFormError" ng-click='register()'>Register!</button>
+			</p>
+		</div>
+		<div class="col-sm-8"></div>
+	</div>
+</div>

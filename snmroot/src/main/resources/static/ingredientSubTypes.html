@@ -8,11 +8,11 @@
 				<li class="active"><a href="#!logout">Logout</a></li>
 				<li><a href="#!servingtypes">Servings</a></li>
 				<li><a href="#!ingredienttypes">Types</a></li>
-				<li><a href="#!ingredientsubtypes">Subtypes</a></li>
+				<li><a href="#!brandnames">Brands</a></li>
 			</ul>
 		</div>
 	</nav>
-	<br>WEBAPP<br>
+	<br>
 	<div ng-show="hasError">
 		<alert ng-repeat="error in errors track by $index" type="danger"
 			close="closeAlert($index)">{{error}}</alert>
@@ -23,28 +23,30 @@
 				<tr>
 					<th>Actions</th>
 					<th></th>
-					<th>Brand Name</th>
+					<th>Ingredient Subtype</th>
 				</tr>
-				<tr ng-repeat="brand in brandNamesList">
+				<tr ng-repeat="subtype in ingredientSubtypeList">
 					<td><button class="w3-btn w3-ripple"
-							ng-click='updateBrand(brand)'>&#9998; Edit</button></td>
+							ng-click='updateIngredientSubtype(subtype)'>&#9998; Edit</button></td>
 					<td><button class="w3-btn w3-ripple"
-							ng-click='deleteBrand(brand.id)'>&#9998; Delete</button></td>
-					<td>{{brand.brand_name_desc}}</td>
+							ng-click='deleteIngredientSubtype(subtype.id)'>&#9998;
+							Delete</button></td>
+					<td>{{subtype.ingredient_subtype_desc}}</td>
 				</tr>
 			</table>
 			<br>
 			<button class="w3-btn w3-green w3-ripple"
-				ng-click="updateBrand('new')">&#9998; Create New Brand</button>
+				ng-click="updateIngredientSubtype('new')">&#9998; Create
+				Ingredient Subtype</button>
 		</div>
 		<br>
-		<div ng-show="showBrandNameForm">
-			<h3 ng-hide="brandNameFormEdit">Create New Brand Name:</h3>
-			<h3 ng-show="brandNameFormEdit">Edit Brand Name:</h3>
-			<label>Brand Name:</label> <input class="w3-input w3-border"
-				type="text" ng-model="BrandNameFormDesc" required> <br>
+		<div ng-show="showISTform">
+			<h3 ng-hide="ISTFormEdit">Create Ingredient Subtype:</h3>
+			<h3 ng-show="ISTFormEdit">Edit Ingredient Subtype:</h3>
+			<label>Subtype description:</label> <input class="w3-input w3-border"
+				type="text" ng-model="ISTFormDesc" required> <br>
 			<button class="w3-btn w3-green w3-ripple"
-				ng-disabled="brandNameFormError" ng-click='saveBrandName()'>&#10004;
-				Save Changes</button>
+				ng-disabled="ingredientSubtypeFormError"
+				ng-click='saveIngredientSubtype()'>&#10004; Save Changes</button>
 		</div>
 </div>

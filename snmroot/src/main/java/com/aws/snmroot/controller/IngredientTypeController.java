@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.aws.snmroot.controller.forms.DeleteMessage;
 import com.aws.snmroot.controller.forms.IngredientTypeListsOutput;
+import com.aws.snmroot.exception.DeletedNotFoundException;
 import com.aws.snmroot.exception.NotFoundException;
 import com.aws.snmroot.hibernate.dao.model.BrandName;
 import com.aws.snmroot.hibernate.dao.model.IngredientSubtype;
@@ -258,7 +260,10 @@ public class IngredientTypeController {
 			Integer primaryKey = new Integer(id);
 			brandNameRepository.deleteById(primaryKey);
 			log.snmrootLoggerDEBUG("deleted brand name");
-			return ResponseEntity.status(HttpStatus.OK).body("brand name with key = " + id + " deleted");
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("brand name with key = " + id + " deleted"));
+		} catch (EmptyResultDataAccessException emp) {
+			log.snmrootLoggerWARN("ingredient type not found!");
+			throw new DeletedNotFoundException("brand name not found! could not find the item to be deleted");
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
 			throw e;
@@ -272,7 +277,10 @@ public class IngredientTypeController {
 			Integer primaryKey = new Integer(id);
 			ingredientTypeRepository.deleteById(primaryKey);
 			log.snmrootLoggerDEBUG("deleted ingredient type");
-			return ResponseEntity.status(HttpStatus.OK).body("ingredient type with key = " + id + " deleted");
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("ingredient type with key = " + id + " deleted"));
+		} catch(EmptyResultDataAccessException emp) {
+			log.snmrootLoggerWARN("ingredient type not found!");
+			throw new DeletedNotFoundException("ingredient type not found! could not find the item to be deleted");
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
 			throw e;
@@ -286,7 +294,10 @@ public class IngredientTypeController {
 			Integer primaryKey = new Integer(id);
 			ingredientSubtypeRepository.deleteById(primaryKey);
 			log.snmrootLoggerDEBUG("deleted ingredient subtype");
-			return ResponseEntity.status(HttpStatus.OK).body("ingredient subtype with key = " + id + " deleted");
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("ingredient subtype with key = " + id + " deleted"));
+		} catch (EmptyResultDataAccessException emp) {
+			log.snmrootLoggerWARN("ingredient type not found!");
+			throw new DeletedNotFoundException("ingredient subttype not found! could not find the item to be deleted");
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
 			throw e;

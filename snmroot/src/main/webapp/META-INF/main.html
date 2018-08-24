@@ -1,0 +1,119 @@
+<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Schnarbies and Meowers!</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#!logout">Logout</a></li>
+				<li><a href="#!servingtypes">Servings</a></li>
+				<li><a href="#!ingredienttypes">Types</a></li>
+				<li><a href="#!ingredientsubtypes">Subtypes</a></li>
+				<li><a href="#!brandnames">Brands</a></li>
+			</ul>
+		</div>
+	</nav>
+<div ng-controller="myCtrl" ng-init="initialize()" class="container">
+	<!-- <div class="row">
+		<div class="col-sm-1" id="btnDiv1" name="btnDiv1">
+				<button id="btn1" name="btn1" ng-click='showSection("1")'>Register</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv2" name="btnDiv2">
+				<button id="btn2" name="btn2" ng-click='showSection("2")'>Login</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv3" name="btnDiv3">
+				<button id="btn3" name="btn3" ng-click='showSection("3")'>Exercise</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv4" name="btnDiv4">
+				<button id="btn4" name="btn4" ng-click='showSection(4)'>?</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv5" name="btnDiv5">
+				<button id="btn5" name="btn5" ng-click='showSection(5)'>?</button>
+			</div>
+			<div class="col-sm-1" id="btnDiv6" name="btnDiv6">
+				<button id="btn6" name="btn6" ng-click='showSection(6)'>?</button>
+			</div> 
+		<div class="col-sm-1" id="btnDiv7" name="btnDiv7">
+			<button id="btn7" name="btn7" ng-click='showSection(7)'>Serving
+				Types</button>
+		</div>
+		<div class="col-sm-1" id="btnDiv8" name="btnDiv8">
+			<button id="btn8" name="btn8" ng-click='showSection(8)'>Ingredient
+				Types</button>
+		</div>
+		<div class="col-sm-1" id="btnDiv9" name="btnDiv9">
+			<button id="btn9" name="btn9" ng-click='showSection(9)'>Ingredients</button>
+		</div>
+		<div class="col-sm-1" id="btnDiv10" name="btnDiv10">
+			<button id="btn10" name="btn10" ng-click='showSection(10)'>Recipes</button>
+		</div>
+		<div class="col-sm-1" id="btnDiv11" name="btnDiv11">
+			<button id="btn11" name="btn11" ng-click='showSection(11)'>Daily
+				Totals</button>
+		</div>
+		<div class="col-sm-1" id="btnDiv12" name="btnDiv12">
+			<button id="btn12" name="btn12" ng-click='showSection(12)'>Eating
+				History</button>
+		</div>
+	</div>
+	<br>
+	<div ng-show="hasError">
+		<alert ng-repeat="error in errors track by $index" type="danger"
+			close="closeAlert($index)">{{error}}</alert>
+	</div>
+	<br>
+
+
+	<div id="section3" name="section3" ng-show="showExerciseSection">
+		<div class="row">
+			<div class="col-sm-12" id="section3Btn" name="section3Btn"
+				ng-show="showExerciseSectionbtn">
+				<button id="btn31" name="btn31" ng-click='findExercise()'>XXX</button>
+			</div>
+		</div>
+	</div>
+
+	reserved for later use
+	<div id="section4" name="section4" ng-show="showSection4"></div>
+	<div class="row">
+		<div class="col-sm-12" id="section4Btn" name="section4Btn"
+			ng-show="showSection4btn">
+			<button id="btn41" name="btn41" ng-click='addUser()'>add
+				User</button>
+		</div>
+	</div>
+	<div id="section5" name="section5" ng-show="showSection5"></div>
+	<div id="section6" name="section6" ng-show="showSection6"></div>
+	reserved for later use
+
+	<div id="section7" name="section7" ng-show="showServingTypeSection"></div>
+	
+	<div id="section8" name="section8" ng-show="showIngredientTypeSection">
+		<row>
+		<div class="col-sm-4" id="showITbtnDiv" name="showITbtnDiv"
+			ng-show="showIngredientTypeSection">
+			<button id="showITbtn" name="showITbtn" ng-click='showIT()'>TYPES</button>
+		</div>
+		<div class="col-sm-4" id="showISTbtnDiv" name="showISTbtnDiv"
+			ng-show="showIngredientTypeSection">
+			<button id="showISTbtn" name="showISTbtn" ng-click='showIST()'>SUB-TYPES</button>
+		</div>
+		<div class="col-sm-4" id="showBrandsbtnDiv" name="showBrandsbtnDiv"
+			ng-show="showIngredientTypeSection">
+			<button id="showBrandsbtn" name="showBrandsbtn"
+				ng-click='showBrands()'>BRANDS</button>
+		</div>
+		</row>
+
+		
+		
+		
+	</div>
+
+	<div id="section9" name="section9" ng-show="showIngredientsSection"></div>
+
+	<div id="section10" name="section10" ng-show="showRecipeSection"></div>
+
+	<div id="section11" name="section11" ng-show="showDailyTotalsSection"></div>
+
+	<div id="section12" name="section12" ng-show="showEatingHistorySection"></div> -->
+</div>
