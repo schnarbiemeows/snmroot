@@ -8,20 +8,24 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.aws.snmroot.controller.forms.BrandNameInputWrapper;
 import com.aws.snmroot.controller.forms.DeleteMessage;
+import com.aws.snmroot.controller.forms.IngredientSubTypeInputWrapper;
+import com.aws.snmroot.controller.forms.IngredientTypeInputWrapper;
 import com.aws.snmroot.controller.forms.IngredientTypeListsOutput;
 import com.aws.snmroot.exception.DeletedNotFoundException;
 import com.aws.snmroot.exception.NotFoundException;
+import com.aws.snmroot.hibernate.dao.model.Account;
 import com.aws.snmroot.hibernate.dao.model.BrandName;
 import com.aws.snmroot.hibernate.dao.model.IngredientSubtype;
 import com.aws.snmroot.hibernate.dao.model.IngredientType;
+import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.repository.BrandNameRepository;
 import com.aws.snmroot.hibernate.repository.IngredientSubtypeRepository;
 import com.aws.snmroot.hibernate.repository.IngredientTypeRepository;
@@ -44,6 +48,9 @@ public class IngredientTypeController {
 	
 	@Autowired
 	IngredientSubtypeRepository ingredientSubtypeRepository;
+	
+	@Autowired
+	UserValidator validator;
 	
 	private LogUtil log = LogUtil.getMasterLogger();
 	
@@ -157,14 +164,22 @@ public class IngredientTypeController {
 	}
 	
 	@PostMapping(path="/brand/insert")
-	public ResponseEntity<Object> insertBrand(@RequestBody BrandName formData) throws Exception {
+	public ResponseEntity<Object> insertBrand(@RequestBody BrandNameInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertBrand");
 		try {
-			if(null==formData.getBrand_name_desc()||formData.getBrand_name_desc().length()<1) {
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
+			BrandName brandName = formData.getBrandName();
+			if(null==brandName.getBrand_name_desc()||brandName.getBrand_name_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			brandNameRepository.save(formData);
+			brandNameRepository.save(brandName);
 			log.snmrootLoggerDEBUG("inserted brand name");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -173,14 +188,22 @@ public class IngredientTypeController {
 	}
 	
 	@PostMapping(path="/maintype/insert")
-	public ResponseEntity<Object> insertIngredientType(@RequestBody IngredientType formData) throws Exception {
+	public ResponseEntity<Object> insertIngredientType(@RequestBody IngredientTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertIngredientType");
 		try {
-			if(null==formData.getIngredient_type_desc()||formData.getIngredient_type_desc().length()<1) {
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
+			IngredientType inputRecord = formData.getIngredientType();
+			if(null==inputRecord.getIngredient_type_desc()||inputRecord.getIngredient_type_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			ingredientTypeRepository.save(formData);
+			ingredientTypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("inserted ingredient type");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -189,14 +212,22 @@ public class IngredientTypeController {
 	}
 	
 	@PostMapping(path="/subtype/insert")
-	public ResponseEntity<Object> insertIngredientSubtype(@RequestBody IngredientSubtype formData) throws Exception {
+	public ResponseEntity<Object> insertIngredientSubtype(@RequestBody IngredientSubTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertIngredientSubtype");
 		try {
-			if(null==formData.getIngredient_subtype_desc()||formData.getIngredient_subtype_desc().length()<1) {
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
+			IngredientSubtype inputRecord = formData.getIngredientSubtype();
+			if(null==inputRecord.getIngredient_subtype_desc()||inputRecord.getIngredient_subtype_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			ingredientSubtypeRepository.save(formData);
+			ingredientSubtypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("inserted ingredient subtype");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -205,14 +236,22 @@ public class IngredientTypeController {
 	}
 	
 	@PostMapping(path="/brand/update")
-	public ResponseEntity<Object> updateBrand(@RequestBody BrandName formData) throws Exception {
+	public ResponseEntity<Object> updateBrand(@RequestBody BrandNameInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateBrand");
 		try {
-			if(null==formData.getBrand_name_desc()||formData.getBrand_name_desc().length()<1) {
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
+			BrandName brandName = formData.getBrandName();
+			if(null==brandName.getBrand_name_desc()||brandName.getBrand_name_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			brandNameRepository.save(formData);
+			brandNameRepository.save(brandName);
 			log.snmrootLoggerDEBUG("updated brand name");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -221,14 +260,22 @@ public class IngredientTypeController {
 	}
 	
 	@PostMapping(path="/maintype/update")
-	public ResponseEntity<Object> updateIngredientType(@RequestBody IngredientType formData) throws Exception {
+	public ResponseEntity<Object> updateIngredientType(@RequestBody IngredientTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateIngredientType");
 		try {
-			if(null==formData.getIngredient_type_desc()||formData.getIngredient_type_desc().length()<1) {
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
+			IngredientType inputRecord = formData.getIngredientType();
+			if(null==inputRecord.getIngredient_type_desc()||inputRecord.getIngredient_type_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			ingredientTypeRepository.save(formData);
+			ingredientTypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("updated ingredient type");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -237,14 +284,22 @@ public class IngredientTypeController {
 	}
 	
 	@PostMapping(path="/subtype/update")
-	public ResponseEntity<Object> updateIngredientSubtype(@RequestBody IngredientSubtype formData) throws Exception {
+	public ResponseEntity<Object> updateIngredientSubtype(@RequestBody IngredientSubTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateIngredientSubtype");
 		try {
-			if(null==formData.getIngredient_subtype_desc()||formData.getIngredient_subtype_desc().length()<1) {
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
+			IngredientSubtype inputRecord = formData.getIngredientSubtype();
+			if(null==inputRecord.getIngredient_subtype_desc()||inputRecord.getIngredient_subtype_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
-			ingredientSubtypeRepository.save(formData);
+			ingredientSubtypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("updated ingredient subtype");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -252,14 +307,22 @@ public class IngredientTypeController {
 		}
 	}
 	
-	@DeleteMapping(path="/brand/delete/{id}")
-	public ResponseEntity<Object> deleteBrand(@PathVariable int id) {
+	@PostMapping(path="/brand/delete")
+	public ResponseEntity<Object> deleteBrand(@RequestBody BrandNameInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteBrand");
 		try {
-			Integer primaryKey = new Integer(id);
-			brandNameRepository.deleteById(primaryKey);
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			BrandName brandName = formData.getBrandName();
+			Integer id = brandName.getId();
+			brandNameRepository.deleteById(id);
 			log.snmrootLoggerDEBUG("deleted brand name");
-			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("brand name with key = " + id + " deleted"));
+			log.snmrootLoggerDEBUG("account token output = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token output = " + account.getAdmintoken());
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("brand name with key = " + id + " deleted",
+					account.getToken(),account.getAdmintoken()));
 		} catch (EmptyResultDataAccessException emp) {
 			log.snmrootLoggerWARN("ingredient type not found!");
 			throw new DeletedNotFoundException("brand name not found! could not find the item to be deleted");
@@ -269,14 +332,22 @@ public class IngredientTypeController {
 		}
 	}
 	
-	@DeleteMapping(path="/maintype/delete/{id}")
-	public ResponseEntity<Object> deleteIngredientType(@PathVariable int id) {
+	@PostMapping(path="/maintype/delete")
+	public ResponseEntity<Object> deleteIngredientType(@RequestBody IngredientTypeInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteIngredientType");
 		try {
-			Integer primaryKey = new Integer(id);
-			ingredientTypeRepository.deleteById(primaryKey);
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			IngredientType inputRecord = formData.getIngredientType();
+			Integer id = inputRecord.getId();
+			ingredientTypeRepository.deleteById(id);
 			log.snmrootLoggerDEBUG("deleted ingredient type");
-			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("ingredient type with key = " + id + " deleted"));
+			log.snmrootLoggerDEBUG("account token output = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token output = " + account.getAdmintoken());
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("ingredient type with key = " + id + " deleted",
+					account.getToken(),account.getAdmintoken()));
 		} catch(EmptyResultDataAccessException emp) {
 			log.snmrootLoggerWARN("ingredient type not found!");
 			throw new DeletedNotFoundException("ingredient type not found! could not find the item to be deleted");
@@ -286,14 +357,22 @@ public class IngredientTypeController {
 		}
 	}
 	
-	@DeleteMapping(path="/subtype/delete/{id}")
-	public ResponseEntity<Object> deleteIngredientSubtype(@PathVariable int id) {
+	@PostMapping(path="/subtype/delete")
+	public ResponseEntity<Object> deleteIngredientSubtype(@RequestBody IngredientSubTypeInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteIngredientSubtype");
 		try {
-			Integer primaryKey = new Integer(id);
-			ingredientSubtypeRepository.deleteById(primaryKey);
+			Account account = formData.getAccount();
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			IngredientSubtype inputRecord = formData.getIngredientSubtype();
+			Integer id = inputRecord.getId();
+			ingredientSubtypeRepository.deleteById(id);
 			log.snmrootLoggerDEBUG("deleted ingredient subtype");
-			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("ingredient subtype with key = " + id + " deleted"));
+			log.snmrootLoggerDEBUG("account token output = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token output = " + account.getAdmintoken());
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("ingredient subtype with key = " + id + " deleted",
+					account.getToken(),account.getAdmintoken()));
 		} catch (EmptyResultDataAccessException emp) {
 			log.snmrootLoggerWARN("ingredient type not found!");
 			throw new DeletedNotFoundException("ingredient subttype not found! could not find the item to be deleted");

@@ -12,7 +12,7 @@
 			</ul>
 		</div>
 	</nav>
-	<br>META-INF<br>
+	<br>STATIC<br>
 	<div ng-show="hasError">
 		<alert ng-repeat="error in errors track by $index" type="danger"
 			close="closeAlert($index)">{{error}}</alert>
@@ -27,15 +27,15 @@
 				</tr>
 				<tr ng-repeat="brand in brandNamesList">
 					<td><button class="w3-btn w3-ripple"
-							ng-click='updateBrand(brand)'>&#9998; Edit</button></td>
+							ng-disabled="viewOnly" ng-click='updateBrand(brand)'>&#9998; Edit</button></td>
 					<td><button class="w3-btn w3-ripple"
-							ng-click='deleteBrand(brand.id)'>&#9998; Delete</button></td>
+							ng-disabled="viewOnly" ng-click='deleteBrand(brand.id)'>&#9998; Delete</button></td>
 					<td>{{brand.brand_name_desc}}</td>
 				</tr>
 			</table>
 			<br>
 			<button class="w3-btn w3-green w3-ripple"
-				ng-click="updateBrand('new')">&#9998; Create New Brand</button>
+				ng-disabled="viewOnly" ng-click="updateBrand('new')">&#9998; Create New Brand</button>
 		</div>
 		<br>
 		<div ng-show="showBrandNameForm">

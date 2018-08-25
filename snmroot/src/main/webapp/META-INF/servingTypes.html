@@ -27,15 +27,15 @@
 			</tr>
 			<tr ng-repeat="serving in servingTypesList">
 				<td><button class="w3-btn w3-ripple"
-						ng-click='updateServingType(serving)'>&#9998; Edit</button></td>
+						ng-disabled="viewOnly" ng-click='updateServingType(serving)'>&#9998; Edit</button></td>
 				<td><button class="w3-btn w3-ripple"
-						ng-click='deleteServingType(serving.id)'>&#9998; Delete</button></td>
+						ng-disabled="viewOnly" ng-click='deleteServingType(serving.id)'>&#9998; Delete</button></td>
 				<td>{{serving.serving_type_desc}}</td>
 			</tr>
 		</table>
 		<br>
 		<button class="w3-btn w3-green w3-ripple"
-			ng-click="updateServingType('new')">&#9998; Create Serving
+			ng-disabled="viewOnly" ng-click="updateServingType('new')">&#9998; Create Serving
 			Type</button>
 	</div>
 	<div ng-show="showSTform">

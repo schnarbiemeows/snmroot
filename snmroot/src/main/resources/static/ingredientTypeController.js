@@ -6,11 +6,6 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	$scope.static = "x";
 	$scope.errors = [];
 	$scope.hasError = false;
-	$scope.accountid = loginProperties.getAccountId();
-	$scope.username = loginProperties.getusername();
-	$scope.logintoken = loginProperties.getLogintoken();
-	$scope.admintoken = loginProperties.getAdmintoken();
-	$scope.subscribertoken = loginProperties.getSubscribertoken();
 	$scope.viewOnly = true;
 	// ingredient type page - 3 tables, ingredient_type, ingredient-subtype, brand_name
 	// ingredient type list variables
@@ -43,7 +38,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.initialize = function() {
 		$scope.clearErrors();
-		$scope.validateUser();
+		$scope.validate();
 		$scope.get3ITlists();
 	}
 	$scope.testIngredientTypeForm = function() {
@@ -67,9 +62,51 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 			$scope.brandNameFormError = false;
 		}
 	}
-	$scope.validateUser = function() {
-		
-	}
+	$scope.validate = function() {
+		item = {
+			    "id": loginProperties.getAccountId(),
+			    "username": loginProperties.getusername(),
+			    "admin": loginProperties.getAdmin(),
+			    "validated": loginProperties.getValidated(),
+			    "token": loginProperties.getLogintoken(),
+			    "admintoken": loginProperties.getAdmintoken(),
+			    "subscribertoken": loginProperties.getSubscribertoken()
+			};
+			var json = JSON.stringify(item);
+			var req = {
+				method : 'POST',
+				url : '/snmroot/login/validate',
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				data : json
+			};
+			$http(req).then(function(response) {
+				data = response.data;
+				console.log('Body:', data);
+				loginProperties.setAccountId(data.id);
+				loginProperties.setUsername(data.username);
+				loginProperties.setValidated(data.validated);
+				loginProperties.setAdmin(data.admin);
+				loginProperties.setLogintoken(data.token);
+				loginProperties.setAdmintoken(data.admintoken);
+				loginProperties.setSubscribertoken(data.subscribertoken);
+				if(typeof data.admin !== "undefined") {
+					if(data.admin == 'Y') {
+						$scope.viewOnly = false;
+					}
+				}
+			}, function myError(response) {
+				loginProperties.setAccountId(null);
+				loginProperties.setUsername(null);
+				loginProperties.setValidated(null);
+				loginProperties.setAdmin(null);
+				loginProperties.setLogintoken(null);
+				loginProperties.setAdmintoken(null);
+				loginProperties.setSubscribertoken(null);
+				$location.path("/home");
+		    });
+		}
 	$scope.get3ITlists = function() {
 		var url = '/snmroot/ingredienttype/all3lists';
 		$http.get(url).then(function(response) {
@@ -215,10 +252,34 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.deleteIngredientType = function(id) {
 		console.log('ingredient type id to be deleted = ' + id);
-		var url = '/snmroot/ingredienttype/maintype/delete/' + id;
-		$http.delete(url).then(function(response) {
-				status = response.status;
-				console.log('status = ', status);
+		item = {
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"ingredientType" : {
+					"id" : id
+				}
+			};
+			var json = JSON.stringify(item);
+			var req = {
+				method : 'POST',
+				url : '/snmroot/ingredienttype/maintype/delete',
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				data : json
+			};
+			$http(req).then(function(response) {
+				data = response.data;
+				console.log('message = ', data.message);
+				loginProperties.setAdmintoken(data.adminToken);
+				loginProperties.setLogintoken(data.loginToken);
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -230,10 +291,34 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.deleteIngredientSubtype = function(id) {
 		console.log('ingredient subtype id to be deleted = ' + id);
-		var url = '/snmroot/ingredienttype/subtype/delete/' + id;
-		$http.delete(url).then(function(response) {
-				status = response.status;
-				console.log('status = ', status);
+		item = {
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"ingredientSubtype" : {
+					"id" : id
+				}
+			};
+			var json = JSON.stringify(item);
+			var req = {
+				method : 'POST',
+				url : '/snmroot/ingredienttype/subtype/delete',
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				data : json
+			};
+			$http(req).then(function(response) {
+				data = response.data;
+				console.log('message = ', data.message);
+				loginProperties.setAdmintoken(data.adminToken);
+				loginProperties.setLogintoken(data.loginToken);
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -245,10 +330,34 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.deleteBrand = function(id) {
 		console.log('brand id to be deleted = ' + id);
-		var url = '/snmroot/ingredienttype/brand/delete/' + id;
-		$http.delete(url).then(function(response) {
-				status = response.status;
-				console.log('status = ', status);
+		item = {
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"brandName" : {
+					"id" : id
+				}
+			};
+			var json = JSON.stringify(item);
+			var req = {
+				method : 'POST',
+				url : '/snmroot/ingredienttype/brand/delete',
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				data : json
+			};
+			$http(req).then(function(response) {
+				data = response.data;
+				console.log('message = ', data.message);
+				loginProperties.setAdmintoken(data.adminToken);
+				loginProperties.setLogintoken(data.loginToken);
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -281,7 +390,18 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.insertIT = function() {
 		item = {
-				"ingredient_type_desc" : $scope.ITFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"ingredientType" : {
+					"ingredient_type_desc" : $scope.ITFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -298,6 +418,8 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.ITFormId = null;
 				$scope.ITFormDesc = null;
 				$scope.ITFormEdit = false;
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -309,7 +431,18 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.insertIST = function() {
 		item = {
-				"ingredient_subtype_desc" : $scope.ISTFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"ingredientSubtype" : {
+					"ingredient_subtype_desc" : $scope.ISTFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -326,6 +459,8 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.ISTFormId = null;
 				$scope.ISTFormDesc = null;
 				$scope.ISTFormEdit = false;
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -337,7 +472,18 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.insertBrandName = function() {
 		item = {
-				"brand_name_desc" : $scope.BrandNameFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"brandName" : {
+					"brand_name_desc" : $scope.BrandNameFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -354,6 +500,8 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.BrandNameFormId = null;
 				$scope.BrandNameFormDesc = null;
 				$scope.brandNameFormEdit = false;
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -365,8 +513,19 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.updateIT = function() {
 		item = {
-				"id" : $scope.ITFormId,
-				"ingredient_type_desc" : $scope.ITFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"ingredientType" : {
+					"id" : $scope.ITFormId,
+					"ingredient_type_desc" : $scope.ITFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -383,6 +542,8 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.ITFormId = null;
 				$scope.ITFormDesc = null;
 				$scope.ITFormEdit = false;	
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -394,8 +555,19 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.updateIST = function() {
 		item = {
-				"id" : $scope.ISTFormId,
-				"ingredient_subtype_desc" : $scope.ISTFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"ingredientSubtype" : {
+					"id" : $scope.ISTFormId,
+					"ingredient_subtype_desc" : $scope.ISTFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -412,6 +584,8 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.ISTFormId = null;
 				$scope.ISTFormDesc = null;
 				$scope.ISTFormEdit = false;	
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -423,8 +597,19 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 	}
 	$scope.updateBrandName = function() {
 		item = {
-				"id" : $scope.BrandNameFormId,
-				"brand_name_desc" : $scope.BrandNameFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"brandName" : {
+					"id" : $scope.BrandNameFormId,
+					"brand_name_desc" : $scope.BrandNameFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -440,7 +625,9 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.showBrandNameForm = false;
 				$scope.BrandNameFormId = null;
 				$scope.BrandNameFormDesc = null;
-				$scope.brandNameFormEdit = false;	
+				$scope.brandNameFormEdit = false;
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;

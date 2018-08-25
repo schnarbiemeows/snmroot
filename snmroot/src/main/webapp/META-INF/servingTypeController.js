@@ -3,13 +3,10 @@
  */
 app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, loginProperties) {
 	// serving type page - 2 tables, serving_type, serving_type_conversion
-	$scope.username = loginProperties.getusername();
-	$scope.logintoken = loginProperties.getLogintoken();
-	$scope.admintoken = loginProperties.getAdmintoken();
-	$scope.subscribertoken = loginProperties.getSubscribertoken();
 	// error messaging
 	$scope.errors = [];
 	$scope.hasError = false;
+	$scope.viewOnly = true;
 	$scope.ServingTypesList = [];
 	$scope.showSTform = false;
 	$scope.STFormId = null;
@@ -23,6 +20,7 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 	}
 	$scope.initialize = function() {
 		$scope.clearErrors();
+		$scope.validate();
 		$scope.getServingTypeList();
 	}
 	$scope.testServingTypeForm = function() {
@@ -32,15 +30,20 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 			$scope.servingTypeFormError = false;
 		}
 	}
-	$scope.checkUser = function() {
+	$scope.validate = function() {
 		item = {
-				"username" : $scope.registerUsername,
-				"password" : $scope.registerPasswor
+			    "id": loginProperties.getAccountId(),
+			    "username": loginProperties.getusername(),
+			    "admin": loginProperties.getAdmin(),
+			    "validated": loginProperties.getValidated(),
+			    "token": loginProperties.getLogintoken(),
+			    "admintoken": loginProperties.getAdmintoken(),
+			    "subscribertoken": loginProperties.getSubscribertoken()
 			};
 			var json = JSON.stringify(item);
 			var req = {
 				method : 'POST',
-				url : '/snmroot/login/register',
+				url : '/snmroot/login/validate',
 				headers : {
 					'Content-Type' : 'application/json'
 				},
@@ -49,17 +52,27 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 			$http(req).then(function(response) {
 				data = response.data;
 				console.log('Body:', data);
-				$scope.username = data.username;
-				$scope.logintoken = data.token;
-				loginProperties.setUsername($scope.username);
-				loginProperties.setLogintoken($scope.logintoken);
-				$location.path("/main");
+				loginProperties.setAccountId(data.id);
+				loginProperties.setUsername(data.username);
+				loginProperties.setValidated(data.validated);
+				loginProperties.setAdmin(data.admin);
+				loginProperties.setLogintoken(data.token);
+				loginProperties.setAdmintoken(data.admintoken);
+				loginProperties.setSubscribertoken(data.subscribertoken);
+				if(typeof data.admin !== "undefined") {
+					if(data.admin == 'Y') {
+						$scope.viewOnly = false;
+					}
+				}
 			}, function myError(response) {
-		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
-				$timeout(function () {
-				      $scope.clearErrors();
-				  }, 3000);
+				loginProperties.setAccountId(null);
+				loginProperties.setUsername(null);
+				loginProperties.setValidated(null);
+				loginProperties.setAdmin(null);
+				loginProperties.setLogintoken(null);
+				loginProperties.setAdmintoken(null);
+				loginProperties.setSubscribertoken(null);
+				$location.path("/home");
 		    });
 		}
 	$scope.getServingTypeList = function() {
@@ -94,10 +107,34 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 	}
 	$scope.deleteServingType = function(id) {
 		console.log('serving type id to be deleted = ' + id);
-		var url = '/snmroot/servingtype/delete/' + id;
-		$http.delete(url).then(function(response) {
-				status = response.status;
-				console.log('status = ', status);
+		item = {
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"servingType" : {
+					"id" : id
+				}
+			};
+			var json = JSON.stringify(item);
+			var req = {
+				method : 'POST',
+				url : '/snmroot/servingtype/delete',
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				data : json
+			};
+			$http(req).then(function(response) {
+				data = response.data;
+				console.log('message = ', data.message);
+				loginProperties.setAdmintoken(data.adminToken);
+				loginProperties.setLogintoken(data.loginToken);
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -116,7 +153,18 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 	}
 	$scope.insertST = function() {
 		item = {
-				"serving_type_desc" : $scope.STFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"servingType" : {
+					"serving_type_desc" : $scope.STFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -133,6 +181,8 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 				$scope.STFormId = null;
 				$scope.STFormDesc = null;
 				$scope.STFormEdit = false;
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
@@ -144,8 +194,19 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 	}
 	$scope.updateST = function() {
 		item = {
-				"id" : $scope.STFormId,
-				"serving_type_desc" : $scope.STFormDesc
+				"account" : {
+				    "id": loginProperties.getAccountId(),
+				    "username": loginProperties.getusername(),
+				    "admin": loginProperties.getAdmin(),
+				    "validated": loginProperties.getValidated(),
+				    "token": loginProperties.getLogintoken(),
+				    "admintoken": loginProperties.getAdmintoken(),
+				    "subscribertoken": loginProperties.getSubscribertoken()
+				},
+				"servingType" : {
+					"id" : $scope.STFormId,
+					"serving_type_desc" : $scope.STFormDesc
+				}
 			};
 			var json = JSON.stringify(item);
 			var req = {
@@ -161,7 +222,9 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 				$scope.showSTform = false;
 				$scope.STFormId = null;
 				$scope.STFormDesc = null;
-				$scope.STFormEdit = false;	
+				$scope.STFormEdit = false;
+				loginProperties.setLogintoken(data.account.token);
+				loginProperties.setAdmintoken(data.account.admintoken);
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;

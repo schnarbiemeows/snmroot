@@ -27,16 +27,16 @@
 				</tr>
 				<tr ng-repeat="ingredient in ingredientTypesList">
 					<td><button class="w3-btn w3-ripple"
-							ng-click='updateIngredientType(ingredient)'>&#9998; Edit</button></td>
+							ng-disabled="viewOnly" ng-click='updateIngredientType(ingredient)'>&#9998; Edit</button></td>
 					<td><button class="w3-btn w3-ripple"
-							ng-click='deleteIngredientType(ingredient.id)'>&#9998;
+							ng-disabled="viewOnly" ng-click='deleteIngredientType(ingredient.id)'>&#9998;
 							Delete</button></td>
 					<td>{{ingredient.ingredient_type_desc}}</td>
 				</tr>
 			</table>
 			<br>
 			<button class="w3-btn w3-green w3-ripple"
-				ng-click="updateIngredientType('new')">&#9998; Create
+				ng-disabled="viewOnly" ng-click="updateIngredientType('new')">&#9998; Create
 				Ingredient Type</button>
 		</div>
 		<div ng-show="showITform">

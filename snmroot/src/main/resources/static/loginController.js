@@ -5,11 +5,6 @@ app.controller('loginCtrl', function($scope, $http, $location, $timeout, loginPr
 	// error messaging
 	$scope.errors = [];
 	$scope.hasError = false;
-	$scope.accountid = loginProperties.getAccountId();
-	$scope.username = loginProperties.getusername();
-	$scope.logintoken = loginProperties.getLogintoken();
-	$scope.admintoken = loginProperties.getAdmintoken();
-	$scope.subscribertoken = loginProperties.getSubscribertoken();
 	// registration page
 	$scope.showRegisterSection = false;
 	$scope.registerUsername = "";
@@ -58,8 +53,6 @@ app.controller('loginCtrl', function($scope, $http, $location, $timeout, loginPr
 		$http(req).then(function(response) {
 			data = response.data;
 			console.log('Body:', data);
-			$scope.username = data.username;
-			$scope.logintoken = data.token;
 			$location.path("/login");
 		}, function myError(response) {
 	        $scope.hasError = true;
@@ -97,11 +90,13 @@ app.controller('loginCtrl', function($scope, $http, $location, $timeout, loginPr
 			data = response.data;
 			console.log('Body:', data);
 			var results = data.results;
-			loginProperties.setAccountId();
-			loginProperties.setUsername(null);
-			loginProperties.setLogintoken($scope.logintoken);
-			loginProperties.setAdmintoken();
-			loginProperties.setSubscribertoken();
+			loginProperties.setAccountId(data.id);
+			loginProperties.setUsername(data.username);
+			loginProperties.setValidated(data.validated);
+			loginProperties.setAdmin(data.admin);
+			loginProperties.setLogintoken(data.token);
+			loginProperties.setAdmintoken(data.admintoken);
+			loginProperties.setSubscribertoken(data.subscribertoken);
 			$location.path("/main");
 		}, function myError(response) {
 	        $scope.hasError = true;

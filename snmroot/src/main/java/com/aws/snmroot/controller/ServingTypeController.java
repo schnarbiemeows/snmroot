@@ -22,7 +22,6 @@ import com.aws.snmroot.hibernate.dao.model.Account;
 import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.repository.ServingTypeRepository;
 import com.aws.snmroot.utility.LogUtil;
-import com.aws.snmroot.utility.UserValidator;
 
 @Controller
 @RequestMapping(path="/servingtype")
@@ -35,6 +34,9 @@ public class ServingTypeController {
 	 */
 	@Autowired
 	ServingTypeRepository servingTypeRepository;
+	
+	@Autowired
+	UserValidator validator;
 	
 	private LogUtil log = LogUtil.getMasterLogger();
 	
@@ -74,14 +76,18 @@ public class ServingTypeController {
 		log.snmrootLoggerDEBUG("inside insertServingType");
 		try {
 			Account account = formData.getAccount();
-			UserValidator validator = new UserValidator(account);
-			account = validator.validateAdminRights(log);
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
 			ServingType inputRecord = formData.getServingType();
 			if(null==inputRecord.getServing_type_desc()||inputRecord.getServing_type_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
 			servingTypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("inserted serving type");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -94,14 +100,18 @@ public class ServingTypeController {
 		log.snmrootLoggerDEBUG("inside updateServingType");
 		try {
 			Account account = formData.getAccount();
-			UserValidator validator = new UserValidator(account);
-			account = validator.validateAdminRights(log);
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
+			formData.setAccount(account);
 			ServingType inputRecord = formData.getServingType();
 			if(null==inputRecord.getServing_type_desc()||inputRecord.getServing_type_desc().length()<1) {
 				throw new Exception("no item description given");
 			}
 			servingTypeRepository.save(inputRecord);
 			log.snmrootLoggerDEBUG("updated serving type");
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getToken());
+			log.snmrootLoggerDEBUG("account token output = " + formData.getAccount().getAdmintoken());
 			return ResponseEntity.status(HttpStatus.OK).body(formData);
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());
@@ -113,12 +123,16 @@ public class ServingTypeController {
 		log.snmrootLoggerDEBUG("inside deleteServingType");
 		try {
 			Account account = formData.getAccount();
-			UserValidator validator = new UserValidator(account);
-			account = validator.validateAdminRights(log);
+			log.snmrootLoggerDEBUG("account token input = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token input = " + account.getAdmintoken());
+			account = validator.validateAdminRights(account,log);
 			ServingType inputRecord = formData.getServingType();
 			Integer id = inputRecord.getId();
 			servingTypeRepository.deleteById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("serving type with key = " + id + "  deleted"));
+			log.snmrootLoggerDEBUG("account token output = " + account.getToken());
+			log.snmrootLoggerDEBUG("account token output = " + account.getAdmintoken());
+			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("serving type with key = " + id + "  deleted",
+					account.getToken(),account.getAdmintoken()));
 		} catch (EmptyResultDataAccessException emp) {
 			log.snmrootLoggerWARN("ingredient type not found!");
 			throw new DeletedNotFoundException("serving type not found! could not find the item to be deleted");

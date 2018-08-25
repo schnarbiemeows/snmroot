@@ -145,6 +145,10 @@ public class LoginController {
 				/* 
 				 * if the login token is the same as the token passed in
 				 */
+				if(null!=user.getValidated()&&!"Y".equals(user.getValidated())) {
+					log.snmrootLoggerWARN("user not validated yet");
+					throw new NotFoundException("user not validated yet");
+				}
 				if(null!=user.getToken()&&user.getToken().equals(formData.getToken())) {
 					// regenerate the token
 					user.setToken(UtilityClass.randomAlphaNumeric(20));
