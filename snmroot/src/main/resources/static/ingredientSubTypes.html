@@ -27,9 +27,9 @@
 				</tr>
 				<tr ng-repeat="subtype in ingredientSubtypeList">
 					<td><button class="w3-btn w3-ripple"
-							ng-click='updateIngredientSubtype(subtype)'>&#9998; Edit</button></td>
+							ng-disabled="viewOnly" ng-click='updateIngredientSubtype(subtype)'>&#9998; Edit</button></td>
 					<td><button class="w3-btn w3-ripple"
-							ng-click='deleteIngredientSubtype(subtype.id)'>&#9998;
+							ng-disabled="viewOnly" ng-click='deleteIngredientSubtype(subtype.id)'>&#9998;
 							Delete</button></td>
 					<td>{{subtype.ingredient_subtype_desc}}</td>
 				</tr>
