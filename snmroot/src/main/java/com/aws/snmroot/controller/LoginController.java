@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,7 @@ public class LoginController {
 	private LogUtil log = LogUtil.getMasterLogger();
 	
 	@PostMapping(path="/register")
-	public ResponseEntity<Object> registerAccount(@RequestBody Account formData) {
+	public ResponseEntity<Object> registerAccount(@Valid @RequestBody Account formData) {
 		log.snmrootLoggerDEBUG("inside registerAccount");
 		try
 		{

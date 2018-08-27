@@ -56,7 +56,13 @@ app.controller('loginCtrl', function($scope, $http, $location, $timeout, loginPr
 			$location.path("/login");
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.data.message);
+	        var errorArray = response.data.details.split(',');
+	        console.log(errorArray);
+	        for(error in errorArray) {
+	        	$scope.errors[error] = errorArray[error];
+	        }
+	        
+			//$scope.errors.push(response.data.message);
 			$timeout(function () {
 			      $scope.clearErrors();
 			  }, 3000);

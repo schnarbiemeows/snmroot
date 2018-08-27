@@ -11,10 +11,11 @@
 		</div>
 	</nav>
 	<br>
-	<div ng-show="hasError">
-		<alert ng-repeat="error in errors track by $index" type="danger"
-			close="closeAlert($index)">{{error}}</alert>
-	</div>
+	<table ng-show="hasError">
+		<tr ng-repeat="error in errors track by $index">
+			<td>{{error}}</td>
+		</tr>
+	</table>
 	<div class="row">
 		<div class="col-sm-4 double" id="registerSectionForm"
 			name="registerSectionForm">

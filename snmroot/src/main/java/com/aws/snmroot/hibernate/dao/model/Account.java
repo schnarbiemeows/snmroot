@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "accounts")
@@ -19,12 +20,15 @@ public class Account {
 	@Column(name = "account_id")
 	private Integer id;
 	
+	@Size(min=2, message="name should have at least 2 characters")
 	@Column(name = "username")
 	private String username;
 	
+	@Size(min=2,  message="password should be at least 2 characters")
 	@Column(name = "password")
 	private String password;
 	
+	@Email(message="email address in not correctly formatted")
 	@Column(name = "email")
 	private String email;
 	
