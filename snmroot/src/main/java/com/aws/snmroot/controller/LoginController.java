@@ -30,7 +30,7 @@ public class LoginController {
 	/* 
 	 * this controller will handle service calls for both registering and logging in
 	 */
-	
+	// comment
 	@Autowired
 	AccountRepository accountRepository;
 	
