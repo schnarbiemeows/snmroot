@@ -12,11 +12,11 @@
 			</ul>
 		</div>
 	</nav>
-	<br>STATIC<br>
-	<div ng-show="hasError">
-		<alert ng-repeat="error in errors track by $index" type="danger"
-			close="closeAlert($index)">{{error}}</alert>
-	</div>
+	<table ng-show="hasError">
+		<tr ng-repeat="error in errors track by $index">
+			<td>{{error}}</td>
+		</tr>
+	</table>
 	<br>
 	<div>
 			<table class="w3-table w3-bordered w3-striped">

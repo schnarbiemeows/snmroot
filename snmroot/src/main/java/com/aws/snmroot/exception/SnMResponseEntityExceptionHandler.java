@@ -1,5 +1,6 @@
 package com.aws.snmroot.exception;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,19 +56,23 @@ public class SnMResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 		return new ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN);
 	}
 	
+	@ExceptionHandler(LoginException.class)
+	public final ResponseEntity<Object> handleLoginRegistrationException(Exception ex, WebRequest request) {
+		SnmExceptionResponse exceptionResponse = 
+		new SnmExceptionResponse(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-			String validationErrorMessage = "";
 			List<ObjectError> errors = ex.getBindingResult().getAllErrors();
+			List<String> defaultErrors = new ArrayList();
 			for(ObjectError error : errors) {
-				String message = error.getDefaultMessage();
-				validationErrorMessage += message + ",";
+				defaultErrors.add(error.getDefaultMessage());
 			}
-			validationErrorMessage = validationErrorMessage.substring(0,validationErrorMessage.length()-1);
 			SnmExceptionResponse exceptionResponse = 
-			new SnmExceptionResponse(new Date(),"Validation failed",
-					validationErrorMessage);
+			new SnmExceptionResponse(new Date(), defaultErrors, "Validation failed");
 			return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }

@@ -127,7 +127,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 			
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.data.message);
+			$scope.errors = response.data.message;
 			$timeout(function () {
 			      $scope.clearErrors();
 			  }, 3000);
@@ -144,7 +144,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.data.message);
+			$scope.errors = response.data.message;
 			$timeout(function () {
 			      $scope.clearErrors();
 			  }, 3000);
@@ -161,7 +161,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.data.message);
+			$scope.errors = response.data.message;
 			$timeout(function () {
 			      $scope.clearErrors();
 			  }, 3000);
@@ -178,7 +178,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.data.message);
+			$scope.errors = response.data.message;
 			$timeout(function () {
 			      $scope.clearErrors();
 			  }, 3000);
@@ -283,7 +283,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -322,7 +322,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -361,7 +361,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -423,7 +423,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -464,7 +464,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -505,7 +505,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -547,7 +547,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getIngredientTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -589,7 +589,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getIngredientSubtypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -631,7 +631,7 @@ app.controller('ingredientTypeCtrl', function($scope, $http, $location, $timeout
 				$scope.getBrandNameList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);

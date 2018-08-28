@@ -134,7 +134,7 @@ public class ServingTypeController {
 			return ResponseEntity.status(HttpStatus.OK).body(new DeleteMessage("serving type with key = " + id + "  deleted",
 					account.getToken(),account.getAdmintoken()));
 		} catch (EmptyResultDataAccessException emp) {
-			log.snmrootLoggerWARN("ingredient type not found!");
+			log.snmrootLoggerWARN("serving type not found!");
 			throw new DeletedNotFoundException("serving type not found! could not find the item to be deleted");
 		} catch (Exception e) {
 			log.snmrootLoggerWARN(e.toString());

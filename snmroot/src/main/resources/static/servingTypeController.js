@@ -86,7 +86,7 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 			console.log('Body:', data);
 		}, function myError(response) {
 	        $scope.hasError = true;
-			$scope.errors.push(response.data.message);
+			$scope.errors = response.data.message;
 			$timeout(function () {
 			      $scope.clearErrors();
 			  }, 3000);
@@ -138,7 +138,7 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -186,7 +186,7 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);
@@ -228,7 +228,7 @@ app.controller('servingTypeCtrl', function($scope, $http, $location, $timeout, l
 				$scope.getServingTypeList();
 			}, function myError(response) {
 		        $scope.hasError = true;
-				$scope.errors.push(response.data.message);
+				$scope.errors = response.data.message;
 				$timeout(function () {
 				      $scope.clearErrors();
 				  }, 3000);

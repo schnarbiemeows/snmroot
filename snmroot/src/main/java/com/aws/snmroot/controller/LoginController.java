@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.aws.snmroot.exception.LoginException;
 import com.aws.snmroot.exception.NotFoundException;
 import com.aws.snmroot.hibernate.dao.model.Account;
 import com.aws.snmroot.hibernate.repository.AccountRepository;
@@ -56,7 +57,7 @@ public class LoginController {
 	
 	@PostMapping(path="/login")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<Object> login(@RequestBody Account formData) {
+	public ResponseEntity<Object> login(@Valid @RequestBody Account formData) {
 		log.snmrootLoggerDEBUG("inside login");
 		Account databaseRecord = null;
 		try
@@ -64,7 +65,7 @@ public class LoginController {
 			if((null==formData.getUsername())||("".equals(formData.getUsername().trim())||
 					(null==formData.getPassword())||("".equals(formData.getPassword().trim())))) {
 				log.snmrootLoggerWARN("username and/or password is missing");
-				ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("username and/or password is missing");
+				throw new LoginException("username and/or password is missing");
 			}
 			List<Account> results = accountRepository.findByUserName(formData.getUsername());
 			if(results!=null&&!results.isEmpty()) {
@@ -72,7 +73,7 @@ public class LoginController {
 				String tempPassword = databaseRecord.getPassword();
 				if(!tempPassword.equals(formData.getPassword().trim())) {
 					log.snmrootLoggerWARN("password is incorrect");
-					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("password is incorrect");
+					throw new LoginException("password is incorrect");
 				}
 				else
 				{
@@ -83,7 +84,7 @@ public class LoginController {
 			}
 			else {
 				log.snmrootLoggerWARN("user not found");
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("user not found");
+				throw new NotFoundException("user not found");
 			}
 		} 
 		catch(Exception e)
@@ -123,7 +124,7 @@ public class LoginController {
 	 */
 	@PostMapping(path="/validate")
 	public ResponseEntity<Object> validateUser(@RequestBody Account formData) throws Exception {
-		log.snmrootLoggerDEBUG("inside checkUser");
+		log.snmrootLoggerDEBUG("inside validateUser");
 		try
 		{
 			/*

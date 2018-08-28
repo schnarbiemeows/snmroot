@@ -1,5 +1,8 @@
 package com.aws.snmroot.controller.forms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeleteMessage {
 
 	private String message;
