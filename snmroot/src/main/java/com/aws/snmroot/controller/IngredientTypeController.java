@@ -31,29 +31,46 @@ import com.aws.snmroot.hibernate.repository.IngredientSubtypeRepository;
 import com.aws.snmroot.hibernate.repository.IngredientTypeRepository;
 import com.aws.snmroot.utility.LogUtil;
 
+/**
+ * this controller will handle service calls for
+ * the ingredient_type, ingredient_subtype, and brand_name tables
+ * @author dylan
+ *
+ */
 @Controller
 @RequestMapping(path="/ingredienttype")
 public class IngredientTypeController {
 
-	/*
-	 * this controller will handle service calls for
-	 * the ingredient_type, ingredient_subtype, and brand_name tables
-	 * 
+	/**
+	 * brand name repository
 	 */
 	@Autowired
 	BrandNameRepository brandNameRepository;
 	
+	/**
+	 * ingredient type repository
+	 */
 	@Autowired
 	IngredientTypeRepository ingredientTypeRepository;
 	
+	/**
+	 * ingredient subtype repository
+	 */
 	@Autowired
 	IngredientSubtypeRepository ingredientSubtypeRepository;
 	
+	/**
+	 * validation object
+	 */
 	@Autowired
 	UserValidator validator;
 	
 	private LogUtil log = LogUtil.getMasterLogger();
 	
+	/**
+	 * get all brands
+	 * @return
+	 */
 	@GetMapping(path="/brand/all")
 	public ResponseEntity<Object> getAllBrands() {
 		log.snmrootLoggerDEBUG("inside getAllBrands");
@@ -67,6 +84,10 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * get all item types
+	 * @return
+	 */
 	@GetMapping(path="/maintype/all")
 	public ResponseEntity<Object> getAllItemTypes() {
 		log.snmrootLoggerDEBUG("inside getAllItemTypes");
@@ -80,6 +101,10 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * get all item sub-types
+	 * @return
+	 */
 	@GetMapping(path="/subtype/all")
 	public ResponseEntity<Object> getAllItemSubtypes() {
 		log.snmrootLoggerDEBUG("inside getAllItemSubtypes");
@@ -93,6 +118,10 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * get all brands, item types, and item sub-types at once
+	 * @return
+	 */
 	@GetMapping(path="/all3lists")
 	public ResponseEntity<Object> getAll3lists() {
 		log.snmrootLoggerDEBUG("inside getAll3lists");
@@ -109,6 +138,11 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * find a brand by id #
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(path="/brand/findById/{id}")
 	public ResponseEntity<Object> findBrandById(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside findBrandById");
@@ -127,6 +161,11 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * find an ingredient type by id #
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(path="/maintype/findById/{id}")
 	public ResponseEntity<Object> findIngredientTypeById(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside findIngredientTypeById");
@@ -145,6 +184,11 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * find an ingredient sub-type by id #
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(path="/subtype/findById/{id}")
 	public ResponseEntity<Object> findIngredientSubtypeById(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside findIngredientSubtypeById");
@@ -163,6 +207,12 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * insert a new brand
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/brand/insert")
 	public ResponseEntity<Object> insertBrand(@RequestBody BrandNameInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertBrand");
@@ -187,6 +237,12 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * insert a new ingredient type
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/maintype/insert")
 	public ResponseEntity<Object> insertIngredientType(@RequestBody IngredientTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertIngredientType");
@@ -211,6 +267,12 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * insert a new ingredient subtype
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/subtype/insert")
 	public ResponseEntity<Object> insertIngredientSubtype(@RequestBody IngredientSubTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertIngredientSubtype");
@@ -235,6 +297,12 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * update a brand
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/brand/update")
 	public ResponseEntity<Object> updateBrand(@RequestBody BrandNameInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateBrand");
@@ -259,6 +327,12 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * update an ingredient type
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/maintype/update")
 	public ResponseEntity<Object> updateIngredientType(@RequestBody IngredientTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateIngredientType");
@@ -283,6 +357,12 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * update an ingredient subtype
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/subtype/update")
 	public ResponseEntity<Object> updateIngredientSubtype(@RequestBody IngredientSubTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateIngredientSubtype");
@@ -307,6 +387,11 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * delete a brand
+	 * @param formData
+	 * @return
+	 */
 	@PostMapping(path="/brand/delete")
 	public ResponseEntity<Object> deleteBrand(@RequestBody BrandNameInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteBrand");
@@ -332,6 +417,11 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * delete an ingredient type
+	 * @param formData
+	 * @return
+	 */
 	@PostMapping(path="/maintype/delete")
 	public ResponseEntity<Object> deleteIngredientType(@RequestBody IngredientTypeInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteIngredientType");
@@ -357,6 +447,11 @@ public class IngredientTypeController {
 		}
 	}
 	
+	/**
+	 * delete an ingredient subtype
+	 * @param formData
+	 * @return
+	 */
 	@PostMapping(path="/subtype/delete")
 	public ResponseEntity<Object> deleteIngredientSubtype(@RequestBody IngredientSubTypeInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteIngredientSubtype");

@@ -23,19 +23,28 @@ import com.aws.snmroot.hibernate.repository.AccountRepository;
 import com.aws.snmroot.utility.LogUtil;
 import com.aws.snmroot.utility.UtilityClass;
 
+/**
+ * 
+ * @author dylan
+ *
+ */
 @Controller
 @RequestMapping(path="/login")
 public class LoginController {
 
-	/* 
+	/**
 	 * this controller will handle service calls for both registering and logging in
 	 */
-	// comment
 	@Autowired
 	AccountRepository accountRepository;
 	
 	private LogUtil log = LogUtil.getMasterLogger();
 	
+	/**
+	 * 
+	 * @param formData
+	 * @return
+	 */
 	@PostMapping(path="/register")
 	public ResponseEntity<Object> registerAccount(@Valid @RequestBody Account formData) {
 		log.snmrootLoggerDEBUG("inside registerAccount");
@@ -55,6 +64,11 @@ public class LoginController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param formData
+	 * @return
+	 */
 	@PostMapping(path="/login")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Object> login(@Valid @RequestBody Account formData) {
@@ -94,6 +108,12 @@ public class LoginController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/checkUser")
 	public ResponseEntity<Object> checkUser(@RequestBody Account formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside checkUser");
@@ -119,8 +139,11 @@ public class LoginController {
 		}
 	}
 	
-	/* 
+	/**
 	 * this method is for the init() method on the table pages, we need to validate their account
+	 * @param formData
+	 * @return
+	 * @throws Exception
 	 */
 	@PostMapping(path="/validate")
 	public ResponseEntity<Object> validateUser(@RequestBody Account formData) throws Exception {

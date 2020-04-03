@@ -12,12 +12,27 @@ import com.aws.snmroot.hibernate.repository.AccountRepository;
 import com.aws.snmroot.utility.LogUtil;
 import com.aws.snmroot.utility.UtilityClass;
 
+/**
+ * validation object
+ * @author dylan
+ *
+ */
 @Component
 public class UserValidator {
 	
+	/**
+	 * accounts repository
+	 */
 	@Autowired
 	AccountRepository accountRepository;
 	
+	/**
+	 * validate if the account has admin rights
+	 * @param account
+	 * @param log
+	 * @return
+	 * @throws UnauthorizedException
+	 */
 	public Account validateAdminRights(Account account, LogUtil log) throws UnauthorizedException{
 		if(null==account.getValidated()||!"Y".equals(account.getValidated())||
 				null==account.getToken()||null==account.getAdmintoken()||

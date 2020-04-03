@@ -23,23 +23,34 @@ import com.aws.snmroot.hibernate.dao.model.ServingType;
 import com.aws.snmroot.hibernate.repository.ServingTypeRepository;
 import com.aws.snmroot.utility.LogUtil;
 
+/**
+ * this controller will handle service calls for
+ * both the serving_type and serving_type_conversion tables
+ * @author dylan
+ *
+ */
 @Controller
 @RequestMapping(path="/servingtype")
 public class ServingTypeController {
 
 	/* 
-	 * this controller will handle service calls for 
-	 * both the serving_type and serving_type_conversion tables
-	 * 
+	 * serving type repository
 	 */
 	@Autowired
 	ServingTypeRepository servingTypeRepository;
 	
+	/**
+	 * valdation object
+	 */
 	@Autowired
 	UserValidator validator;
 	
 	private LogUtil log = LogUtil.getMasterLogger();
 	
+	/**
+	 * get all serving types
+	 * @return
+	 */
 	@GetMapping(path="/all")
 	public ResponseEntity<Object> getAllServingTypes() {
 		log.snmrootLoggerDEBUG("inside servingTypeRepository");
@@ -53,6 +64,11 @@ public class ServingTypeController {
 		}
 	}
 	
+	/**
+	 * find a serving type by id #
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(path="/findById/{id}")
 	public ResponseEntity<Object> findServingTypeById(@PathVariable int id) {
 		log.snmrootLoggerDEBUG("inside findServingTypeById");
@@ -71,6 +87,12 @@ public class ServingTypeController {
 		}
 	}
 	
+	/**
+	 * create a new serving type
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/insert")
 	public ResponseEntity<Object> insertServingType(@RequestBody ServingTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside insertServingType");
@@ -95,6 +117,12 @@ public class ServingTypeController {
 		}
 	}
 	
+	/**
+	 * update a serving type
+	 * @param formData
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/update")
 	public ResponseEntity<Object> updateServingType(@RequestBody ServingTypeInputWrapper formData) throws Exception {
 		log.snmrootLoggerDEBUG("inside updateServingType");
@@ -118,6 +146,12 @@ public class ServingTypeController {
 			throw e;
 		}
 	}
+	
+	/**
+	 * delete a serving type
+	 * @param formData
+	 * @return
+	 */
 	@PostMapping(path="/delete")
 	public ResponseEntity<Object> deleteServingType(@RequestBody ServingTypeInputWrapper formData) {
 		log.snmrootLoggerDEBUG("inside deleteServingType");
